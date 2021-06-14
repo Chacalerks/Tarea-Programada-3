@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import messagebox
 import time
 
-color = {"fondo":"#343A40", "sidebar":"#343A40", "topbar":"#000000", "caja": "#F9D71D" ,  "principal": "#FFFFFF", "secundario": "#343A40","tercero":"#0E3D5E"}
+color = {"fondo":"#FFFFFF", "sidebar":"#343A40", "topbar":"#000000", "caja": "#F9D71D" ,  "principal": "#343A40", "secundario": "#343A40","tercero":"#0E3D5E"}
 tittle = "Sistema de donación"
 #----------------------------------------------------------------------------
 #                           Navegación
@@ -20,10 +20,10 @@ def cargarInicio(mainFrame, card_img):
     Salidas: NA
     """
     limpiarFrame(mainFrame)
-    tk.Label(mainFrame, bg=color["principal"], text="",pady=25).pack(side="top")
-    card_lb = tk.Label(mainFrame, image=card_img, bd=0,bg=color["principal"])
+
+    card_lb = tk.Label(mainFrame, image=card_img, bd=0,bg=color["fondo"])
     card_lb.pack(side="top")
-    tk.Label(mainFrame, text="Donar sangre, es donar vida", font="Bahnschrift 16", bg=color["principal"], fg="white", height=1, padx=20,pady=25).pack(side="top")
+    #tk.Label(mainFrame, text="Donar sangre, es donar vida", font="Bahnschrift 16", bg=color["principal"], fg="white", height=1, padx=20,pady=25).pack(side="top")
 
 def salir():
     messagebox.showinfo(title=tittle, message="Donar sangre, es donar vida")

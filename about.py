@@ -62,7 +62,7 @@ desarrollo del programa."
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:cargarInicio(mainFrame,corazon_img))
     regresar_btn.grid(row=0, column=3)
 
-    tk.Label(grupo, text="Programa realizado para la II Tarea Programada \n\
+    tk.Label(grupo, text="Programa realizado para la III Tarea Programada \n\
 del curso de Taller de Prgramación GR2\n\
 del Tecnológico de Costa Rica.\n\nLa figura del corazón fue creada por: Freepik y recuperada de: www.flaticon.com \n\nVersión 1.5",font="BahnschriftLight 10",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).grid(row=4, column=0)
 
