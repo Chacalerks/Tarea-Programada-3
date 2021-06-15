@@ -12,7 +12,7 @@ from validaciones import *
 from funciones import *
 from archivo import*        
 
-def actualizarLicenciaES(mainFrame,corazon_img,lista):
+def RevonvarLicenciaES(mainFrame,corazon_img,lista):
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
@@ -24,7 +24,7 @@ def actualizarLicenciaES(mainFrame,corazon_img,lista):
     cedula_txt = ttk.Entry(grupo,textvariable=cedula, width=80)
     cedula_txt.grid(row=1, column=1, pady=10,padx=10, columnspan=2)
 
-    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:buscarCedula(lista,cedula))
+    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:renovarCedula(lista,cedula))
     buscar_btn.grid(row=4, column=1,padx=5, pady=80)
     
     limpiar_btn = ttk.Button(grupo, text="Limpiar",width=25,padding=10, command=lambda:limpiarCampos([cedula]))
@@ -34,7 +34,7 @@ def actualizarLicenciaES(mainFrame,corazon_img,lista):
     regresar_btn.grid(row=0,rowspan=2, column=3, columnspan=2, pady=10,padx=300,  sticky=E)
     
     
-def buscarCedula(lista,cedula):
+def renovarCedula(lista,cedula):
     cedula=cedula.get()
     if not validarExistente(cedula,lista):
         messagebox.showwarning(title=tittle, message="No se ha encontrado la licencia ligada a esta cédula")

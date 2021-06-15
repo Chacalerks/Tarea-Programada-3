@@ -27,6 +27,21 @@ def determinarPar(num):
         return True
     else:
         return False
+def obtenerFechaActual():
+    """
+    funcionamiento: Se encarga de obtner la fecha actual
+    entradas: Na
+    salidas: Fecha Actual
+    """
+    return datetime.now().date().strftime('%d-%m-%Y')
+
+def obtenerHoraActual():
+    """
+    funcionamiento: Se encarga de obtner la hora actual
+    entradas: Na
+    salidas: Hora Actual
+    """
+    return datetime.now().time().strftime('%H:%M:%S')
 
 def convertirFechaAnnos(fecha):
     """
