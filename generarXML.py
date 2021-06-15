@@ -3,13 +3,12 @@
 #Última modificación: 
 #Versión: 3.9.5
 
-
-
 import xml.etree.cElementTree as ET
 import requests
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 from general import *
+from funciones import *
 
 #obtiene el html de la web page
 url = "https://practicatest.cr/blog/licencias/tipos-licencia-conducir-costa-rica"
@@ -23,14 +22,37 @@ subtipos = []
 comentarios = []
 requisistos = []
 
+def limpiarVariables():
+    """
+    Funcionamiento: Se encarga de limpiar la variables para volver a crear un XML
+    Entradas: NA
+    Salidas: Variables reiniciadas
+    """
+    for i in range(0,len(tipos)):
+        tipos.pop(0)
+    for i in range(0,len(subtipos)):
+        subtipos.pop(0)
+    for i in range(0,len(comentarios)):
+        comentarios.pop(0)
+    for i in range(0,len(requisistos)):
+        requisistos.pop(0)
+
 def obtenerTiposLicencias(): 
-    #Obtiene los tipos de lincencias
+    """
+    Funcionamiento: Se encarga de obtener los h2 de la pagina web
+    Entradas: NA
+    Salidas: Lista de tipos de licencias
+    """
     for i in soup.findAll('h2'): 
         if i.text != "":
             tipos.append(i.text)
 
 def obtenerSubTipo():
-    #Obtiene un array de los subtipos de licencias y los comentarios de esta
+    """
+    Funcionamiento: Se encarga de obtener los h3 y los comentarios de la pagina web
+    Entradas: NA
+    Salidas: Lista de subtipos y el comentario de esta
+    """
     filaTipos = []
     filaComentario = []
     caracter = "A"
@@ -55,7 +77,11 @@ def obtenerSubTipo():
     comentarios.append(filaComentario) 
 
 def obtenerRequisitos():
-    #Obtiene un array de los requisitos de las licencias
+    """
+    Funcionamiento: Se encarga de obtener los requesitos comentarios de la pagina web
+    Entradas: NA
+    Salidas: Lista de requsitos
+    """
     temp = 0
     cont = 0
     filaRequisitos = [] 
@@ -76,15 +102,22 @@ def obtenerRequisitos():
 
 
 def crearXML():
-    #Esta función crea el archivo de XML a partir de la variables globales de arriba
+    """
+    Funcionamiento: Se encarga de crear el XMl
+    Entradas: NA
+    Salidas: XMl de las licencias
+    """
     root = ET.Element("ArchivoLicencias")
     cont = 0
+    print(len(tipos),len(subtipos), len(requisistos))
     for i in tipos:
         tipoLicenciaET = ET.SubElement(root, "TipoLicencia")
         NombreTipo = ET.SubElement(tipoLicenciaET, "Nombre")
         NombreTipo.text = i
+        
         for j in subtipos[cont]:
             #nombre del Subtipo
+            print(j)
             subTipoET = ET.SubElement(tipoLicenciaET, "SubTipoLicencia")
             NombreSubTipo = ET.SubElement(subTipoET, "NombreSubTipo")
             NombreSubTipo.text = j
@@ -105,17 +138,28 @@ def crearXML():
                     requisitoET.text = i
         cont +=1
     arbol = ET.ElementTree(root)
-    arbol.write("./licencia.xml")
+    arbol.write("licencia.xml")
 
 def crearXML_ES():
-    #Es la funcion de entrada y salida que crea el archivo XML
+    """
+    Funcionamiento: Se encarga de la E/S, que llama a todas las funciones de XML
+    Entradas: NA
+    Salidas: Archivo XML
+    """
+    limpiarVariables()
     obtenerTiposLicencias()
     obtenerSubTipo()
     obtenerRequisitos()
     crearXML()
     messagebox.showinfo(title=tittle, message="Se creó correctamente el archivo")
+    abrirPage("licencia.xml")
 
 def leerXML():
+    """
+    Funcionamiento: Lee el archivo XMl y obtiene el tipo de lincencia
+    Entradas: NA
+    Salidas: Lista de licencia
+    """
     lista = []
     with open('licencia.xml', 'r') as f:
         data = f.read()

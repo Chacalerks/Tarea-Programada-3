@@ -13,6 +13,7 @@ import time
 from dominate.tags import *
 from archivo import *
 from clase import *
+import webbrowser   
 
 def determinarPar(num):
     """
@@ -273,17 +274,8 @@ def renovarLicencia(posicion, lista):
 #----------------------------------------------------------------------------#
 #                           Provincias                                       #
 #----------------------------------------------------------------------------#
-def guardarLugar(datos,dicc):
-    """
-    Funcionamiento: Se encarga guardar los nuevos lugares.
-    Entradas: -datos: datos del lugar dicc: diccionario en el que se va a guardar
-    Salidas: NA
-    """
-    lugares = []
-    lugares = dicc[datos[0]]
-    lugares.append(datos[1])
-    print("esta es la provincia "+datos[0])
-    dicc[datos[0]] = lugares
+def abrirPage(nombreFile):
+    webbrowser.open_new_tab(nombreFile)
 
 #----------------------------------------------------------------------------#
 #                           Reportes                                         #

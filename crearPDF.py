@@ -12,9 +12,15 @@ from typing import Text
 from general import *
 from validaciones import *
 from funciones import *
-from archivo import*        
+from archivo import* 
+    
 
 def crearPDF_ES(mainFrame,corazon_img,lista):
+    """
+    Funcionamiento: Se encarga de ES
+    Entradas: Datos: mainframe: frame donde se va a cargar, corazon: imagen incio, lista: base deatos
+    Salidas: Archivo pdf
+    """
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
@@ -26,7 +32,7 @@ def crearPDF_ES(mainFrame,corazon_img,lista):
     cedula_txt = ttk.Entry(grupo,textvariable=cedula, width=80)
     cedula_txt.grid(row=1, column=1, pady=10,padx=10, columnspan=2)
 
-    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:crearPDFValidacion(lista,cedula))
+    buscar_btn = ttk.Button(grupo, text="Crear PDF",width=25,padding=10, command=lambda:crearPDFValidacion(lista,cedula))
     buscar_btn.grid(row=4, column=1,padx=5, pady=80)
     
     limpiar_btn = ttk.Button(grupo, text="Limpiar",width=25,padding=10, command=lambda:limpiarCampos([cedula]))
@@ -37,14 +43,24 @@ def crearPDF_ES(mainFrame,corazon_img,lista):
     
     
 def crearPDFValidacion(lista,cedula):
+    """
+    Funcionamiento: Se encarga de las validaciones E/S del pdf
+    Entradas: lista: base de datos, Cedula, a buscar
+    Salidas: Archivo pdf
+    """
     cedula=cedula.get()
     if not validarExistente(cedula,lista):
         messagebox.showwarning(title=tittle, message="No se ha encontrado la licencia ligada a esta cédula")
     else:
         crearPDf(lista[obtenerPosicion(cedula,lista)].mostrarDatos())
-        messagebox.showinfo(title=tittle, message="Se ha creado el PDF!")
+        
+
 def crearPDf(datos):
-    
+    """
+    Funcionamiento: Se encarga de crear el pdf de la licenca
+    Entradas: Datos: una tupla con los datos
+    Salidas: Archivo pdf
+    """
     pdf = FPDF('P', 'mm',(150,90))
     pdf.add_page()
     pdf.add_font('sysfont', '', r"D:\TEC\I SEMESTRE\Intro-Taller (Laura)\Taller\Tareas\Tarea Programada 3\Tarea-Programada-3\arial\arial.ttf", uni=True)
@@ -75,7 +91,7 @@ def crearPDf(datos):
     # la Fecha de la base de datos
     pdf.set_font('arial', '', 14)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(8, 5, obtenerFechaActual(),0,1)
+    pdf.cell(8, 5, datos[3],0,1)
 
     # Fecha de Nacimiento
     pdf.set_font('arial', 'B', 14)
@@ -84,7 +100,7 @@ def crearPDf(datos):
     # la Fecha de la base de datos
     pdf.set_font('arial', '', 14)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(8, 5, datos[3],0,1)
+    pdf.cell(8, 5, datos[2],0,1)
 
     # Fecha de Vecimiento
     pdf.set_font('arial', 'B', 14)
@@ -128,5 +144,17 @@ def crearPDf(datos):
     pdf.set_font('arial', '', 10)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(10, 5, obtenerFechaActual()+" "+obtenerHoraActual()+ " No se que es esto")
+    crearArchivo(pdf)
 
-    pdf.output('licencia'+obtenerFechaActual()+'.pdf')
+def crearArchivo(pdf):
+    """
+    Funcionamiento: Se encarga de validar que el archivo no esté abierto
+    Entradas: pdf: objeto de pdf
+    Salidas: Archivo pdf
+    """
+    try:
+        pdf.output('licencia'+obtenerFechaActual()+'.pdf')
+        messagebox.showinfo(title=tittle, message="Se ha creado el PDF!")
+        abrirPage('licencia'+obtenerFechaActual()+'.pdf')
+    except:
+        messagebox.showwarning(title=tittle, message="No se puede crear el pdf, cierre el archivo abierto!")
