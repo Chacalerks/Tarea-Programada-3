@@ -12,29 +12,29 @@ Documentación IMPORTANTE:
 
 from tkinter import PhotoImage
 import tkinter as tk
-
+from generarXML import *
 from ingresar import*
 from generar import*
 from eliminar import*
 from about import *
-
 from general import*
 from funciones import *
 from archivo import *
 from validaciones import *
 from reportes import *
-lista= []
+
+lista = []
 lista = leerDatos('datos')
 
-print(lista[0].getCedula())
-print(lista[0].getFechaVenci())
+print(lista[19].mostrarDatos())
+print(lista[20].mostrarDatos())
 print("\n\n")
 
 
 
 #Configuaricón de la ventana
 root = tk.Tk()
-root.title("Sistema de donaciones")
+root.title("Sistema de Licencias")
 root.geometry("1400x900+150+50")
 
 #Barra superior
@@ -63,12 +63,12 @@ corazon_lb.pack(side="top")
 #Botones de navegación:
 #Crear XML
 insertar_btn = tk.Button(navFrame, text="Crear XML",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:insertarDonadorES(mainFrame, card_img, lista,[],"I",dicc))
+activeforeground="black", bd=0, padx=60, pady=5, command=crearXML_ES)
 insertar_btn.place(x=50, y=80, width=200)
 
 #Generar Licencias
 generar_btn = tk.Button(navFrame, text="Generar licencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img, lista))
+activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img,leerXML(),lista))
 generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias

@@ -9,7 +9,7 @@ from tkinter import messagebox
 import time
 
 color = {"fondo":"#FFFFFF", "sidebar":"#343A40", "topbar":"#000000", "caja": "#F9D71D" ,  "principal": "#343A40", "secundario": "#343A40","tercero":"#0E3D5E"}
-tittle = "Sistema de donación"
+tittle = "Sistema de Licencias"
 #----------------------------------------------------------------------------
 #                           Navegación
 #----------------------------------------------------------------------------
