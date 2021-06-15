@@ -95,7 +95,6 @@ def validarFormatoFecha(dob):
     else:
         return False
 
-print(validarFormatoFecha("12/08/2030"))
 def validarEdad(dob):
     """
     funcionamiento: se encarga de validar que el donante sea mayor a 18 años
@@ -123,33 +122,7 @@ def validarCorreo(correo):
         return True
     else:
         return False
-
-def validarTelefono(telefono):
-    """
-    funcionamiento: Se encarga de validar que el numero de telefono del donador sea valido
-    entradas: correo: el numero de telefono del donador
-    salidas: True: si el numero de telefono SÍ es válida 
-    False: si el numero de telefono NO es válida
-    """
-    if re.match("^\d{4}\-\d{4}$",telefono):
-        return True
-    else:
-        return False
-        
-def validarPeso(peso):
-    """
-    funcionamiento: Se encarga de validar que el peso del donador sea valido
-    entradas: correo: el peso del donador
-    salidas: True: si el peso SÍ es válida 
-    False: si el peso NO es válida
-    """
-    try:
-        if peso > 50 and peso < 120:
-            return True
-        else:
-            return False   
-    except:
-        return False
+   
 
 def validarExistente(id, matriz):
     """
@@ -159,36 +132,21 @@ def validarExistente(id, matriz):
     False: si el donador NO se encuentra en la base de datos
     """
     for i in matriz:
-        if id == i[0]:
+        if id == i.getCedula():
             return True
     return False
 
-def validarRangoEdad(edad):
+def validarPuntaje(posicion, lista):
     """
-    funcionamiento: Se encarga de validar la edad que el usuario ingrese de un donante en los reportes
-    entradas: edad: la edad que haya ingresado
-    salidas: True: si la edad SI es igual o mayor a 18 y menor o igual a 60
-    False: si la edad NO es mayor a 18 o si la edad es mayor a 60
+    funcionamiento: analiza el puntaje del conductor y devuelve distintas salidas dependiendo del puntaje
+    entradas: posicion: la posicion de la licencia a analizar
+    salidas: True: si la licencia si puede ser renovada
+    a: si la licencia no puede ser renovada, pero debe hacer el examen teorico de nuevo
+    False: si la licencia no puede volver a ser renovada nunca
     """
-    try:
-        if int(edad) >= 18 and int(edad) < 65:
-            return True
-        else:
-            return False
-    except:
-        return False
-    
-def validarEdades(edad1,edad2):
-    """
-    funcionamiento: Se encarga de validar la edad que el usuario ingrese de un donante en los reportes
-    entradas: edad: la edad que haya ingresado
-    salidas: True: si la edad SI es igual o mayor a 18 y menor o igual a 60
-    False: si la edad NO es mayor a 18 o si la edad es mayor a 60
-    """
-    try:
-        if int(edad1) <= int(edad2):
-            return True
-        else:
-            return False
-    except:
+    if lista[posicion].getPuntaje() > 6:
+        return True
+    elif lista[posicion].getPuntaje() > 0 and lista[posicion].getPuntaje() <= 6:
+        return 'a'
+    else:
         return False

@@ -1,6 +1,6 @@
 #Creado por: César Jiménez Salazar y Maynor Erks Martínez Hernández.
-#Fecha de realización: 13/06/2021 10:10 p.m
-#Última modificación: 
+#Fecha de realización:06/05/2021 07:21 p.m
+#Última modificación:24/05/2021 1:20  a.m
 #Versión: 3.9.5
 
 """
@@ -12,30 +12,29 @@ Documentación IMPORTANTE:
 
 from tkinter import PhotoImage
 import tkinter as tk
-
+from generarXML import *
 from ingresar import*
 from generar import*
 from eliminar import*
 from about import *
-
 from general import*
 from funciones import *
 from archivo import *
 from validaciones import *
 from reportes import *
-matriz= []
-matriz = leerDatos('datos')
-dicc = leerDatos('provincias')
 
-print(matriz)
+lista = []
+lista = leerDatos('datos')
+
+print(lista[19].mostrarDatos())
+print(lista[20].mostrarDatos())
 print("\n\n")
-print(dicc)
 
 
 
 #Configuaricón de la ventana
 root = tk.Tk()
-root.title("Sistema de donaciones")
+root.title("Sistema de Licencias")
 root.geometry("1400x900+150+50")
 
 #Barra superior
@@ -64,32 +63,32 @@ corazon_lb.pack(side="top")
 #Botones de navegación:
 #Crear XML
 insertar_btn = tk.Button(navFrame, text="Crear XML",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:insertarDonadorES(mainFrame, card_img, matriz,[],"I",dicc))
+activeforeground="black", bd=0, padx=60, pady=5, command=crearXML_ES)
 insertar_btn.place(x=50, y=80, width=200)
 
 #Generar Licencias
-generar_btn = tk.Button(navFrame, text="Generar lincencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img, matriz))
+generar_btn = tk.Button(navFrame, text="Generar licencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
+activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img,leerXML(),lista))
 generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias
 actualizar_btn = tk.Button(navFrame, text="Renovar",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:actulizarDonadorES(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:actualizarLicenciaES(mainFrame, card_img, lista))
 actualizar_btn.place(x=50, y=240, width=200)
 
 #Generar PDF
 eliminar_btn = tk.Button(navFrame, text="Generar PDF",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:eliminarES(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:eliminarES(mainFrame, card_img, lista))
 eliminar_btn.place(x=50, y=320, width=200)
 
 #Reportes de Excel
 provincia_btn = tk.Button(navFrame, text="Reportes de Excel",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,  command=lambda:menuReportes(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5,  command=lambda:menuReportes(mainFrame, card_img, lista))
 provincia_btn.place(x=50, y=400, width=200)
 
 #Acerca de 
 acerca_btn = tk.Button(navFrame, text="Acerca de",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:about(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:about(mainFrame, card_img, lista))
 acerca_btn.place(x=50, y=480,width=200)
 
 

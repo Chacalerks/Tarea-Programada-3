@@ -6,7 +6,11 @@
 DOCUMENTACIÓN
 + Nos parace obsesivo documentar cada función por eso un comentario genral que los sepra ya que cada función se explica por sí misma
 """
-class Liencia():
+from datetime import datetime
+import time
+import random
+
+class Licencia():
 ####### Inicialización de la Clase
     def __init__(self,cedula, nombre, fechaNac, fechaEx, fechaVenci, tipoLicencia, tipoSangre, donador, sede, puntaje, correo):
         self.cedula = cedula
@@ -71,3 +75,52 @@ class Liencia():
 ###### Get genral de los datos completos.
     def mostrarDatos(self):
         return self.cedula, self.nombre, self.fechaNac, self.fechaEx, self.fechaVenci, self.tipoLicencia, self.tipoSangre, self.donador, self.sede,  self.puntaje, self.correo
+
+def generarFechaExp():
+    """
+    funcionamiento: genera la fecha de hoy
+    entradas: N/A
+    salidas: la fecha de hoy en string
+    """
+    return time.strftime('%d/%m/%Y', time.localtime())
+
+def convertirFechaAnnos(fecha):
+    annos = int(generarFechaExp()[6:]) - int(fecha[6:])
+    return annos
+
+#print(convertirFechaAnnos("06/10/2002"))
+
+def generarFechaVenc(edad):
+    if edad >= 18 and edad <= 25:
+        edadVen = generarFechaExp()[0:6] + str(int(generarFechaExp()[6:])+3)
+    else:
+        edadVen = generarFechaExp()[0:6] + str(int(generarFechaExp()[6:])+5)
+    return edadVen
+
+#print(generarFechaVenc(33))
+
+def generarTipoLicencia(tiposLicencias):
+    return random.choice(tiposLicencias)
+
+#print(generarTipoLicencia(['A1', 'B1', 'B2', 'B3', 'C3']))
+
+def generarTipoSangre():
+    return random.choice(["O", "A", "B", "AB"])+random.choice("-+")\
+            
+#print(generarTipoSangre())
+
+def traducirLugar(lugar):
+    """
+    funcionamiento: Traduce el lugar según corresponsa con tilde  no 
+    entradas: lugar: lugar a traducir
+    salidas: Traduccion
+    """
+    lugares = ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
+               'Barrio Sandoval de Moín','Carretera al Aeropuerto Daniel Oduber','Aeropuerto de Nicoya','Chacarita, Calle 138','Pérez Zeledón',
+               'Río Claro de Golfito','San Carlos']
+    if lugar.isdigit():
+        return lugares[int(lugar)]
+    else:
+        return str(lugares.index(lugar))
+
+#print(traducirLugar('Río Claro de Golfito'))

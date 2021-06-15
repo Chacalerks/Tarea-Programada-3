@@ -6,10 +6,10 @@
 
 
 import xml.etree.cElementTree as ET
-
-from xml.dom import minidom
 import requests
 from bs4 import BeautifulSoup
+from tkinter import messagebox
+from general import *
 
 #obtiene el html de la web page
 url = "https://practicatest.cr/blog/licencias/tipos-licencia-conducir-costa-rica"
@@ -28,7 +28,6 @@ def obtenerTiposLicencias():
     for i in soup.findAll('h2'): 
         if i.text != "":
             tipos.append(i.text)
-        #print(i.text)
 
 def obtenerSubTipo():
     #Obtiene un array de los subtipos de licencias y los comentarios de esta
@@ -105,18 +104,16 @@ def crearXML():
                     requisitoET = ET.SubElement(requesitosET, "Requisito")        
                     requisitoET.text = i
         cont +=1
-
-
-    print(len(tipos), len(subtipos), len(comentarios), len(requisistos))
-    ET.SubElement(tipoLicenciaET, "nodo2", atributo="algo").text = "texto 2"
     arbol = ET.ElementTree(root)
     arbol.write("./licencia.xml")
 
-obtenerTiposLicencias()
-obtenerSubTipo()
-obtenerRequisitos()
-crearXML()
-
+def crearXML_ES():
+    #Es la funcion de entrada y salida que crea el archivo XML
+    obtenerTiposLicencias()
+    obtenerSubTipo()
+    obtenerRequisitos()
+    crearXML()
+    messagebox.showinfo(title=tittle, message="Se creó correctamente el archivo")
 
 def leerXML():
     lista = []
@@ -127,6 +124,3 @@ def leerXML():
     for i in NombreSubTipo:
         lista.append(i.text[9:][:2])
     return lista
-
-lista = leerXML()
-print(lista)
