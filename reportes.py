@@ -15,7 +15,7 @@ from validaciones import *
 from funciones import *
 from archivo import*
 
-def menuReportes(mainFrame,corazon_img,matriz):
+def menuReportes(mainFrame,corazon_img,lista):
 
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
@@ -25,68 +25,42 @@ def menuReportes(mainFrame,corazon_img,matriz):
 
     #Totalidad de Licencias
     provincia_btn = tk.Button(grupo, text="Totalidad de Licencias",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porTotalidad(mainFrame,corazon_img,matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteTotalidadES(lista))
     provincia_btn.grid(row=1, column=0,padx=15, pady=35)
 
     #Por tipo de licencia
     rango_btn = tk.Button(grupo, text="Por tipo de licencia",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20, command=lambda:porTipoLicencia(mainFrame,corazon_img,matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20, command=lambda:porTipoLicencia(mainFrame,corazon_img,lista))
     rango_btn.grid(row=1, column=1,padx=15, pady=35)
 
     #Examen por sanción
     sangre_btn = tk.Button(grupo, text="Examen por sanción",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porTipoSangre(mainFrame,corazon_img,matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porTipoSangre(mainFrame,corazon_img,lista))
     sangre_btn.grid(row=2, column=0,padx=15, pady=35)
 
     #Los donantes de órganos
     completos_btn = tk.Button(grupo, text="Los donantes de órganos",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteTotalES(matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteTotalES(lista))
     completos_btn.grid(row=2, column=1,padx=15, pady=35)
 
     #Licencia anulada
     mujeres_btn = tk.Button(grupo, text="Licencia anulada",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteMujeresONegativoES(matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteMujeresONegativoES(lista))
     mujeres_btn.grid(row=3, column=0,padx=15, pady=35)
 
     #Licencias por sede
     donadores_btn = tk.Button(grupo, text="Licencias por sede",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porSede(mainFrame,corazon_img,matriz))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porSede(mainFrame,corazon_img,lista))
     donadores_btn.grid(row=3, column=1,padx=15, pady=35)
 
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:cargarInicio(mainFrame,corazon_img))
     regresar_btn.grid(row=0, column=2, columnspan=2, pady=10, padx=150, sticky=E)
 
-############################################## Por Provincia
-def porTotalidad(mainFrame,corazon_img,matriz):
-    """
-    Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
-    Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
-    Salidas: NA
-    """
-    limpiarFrame(mainFrame)
-    grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
-    grupo.pack(fill=tk.BOTH,expand=1)
-
-    tk.Label(grupo, text="Por Provincia ",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
-    #Provincias
-    provincia = StringVar()
-    provincia.set("San José")
-    tk.Label(grupo, text="Provincia: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=1, column=0, pady=10,padx=10, sticky=E)
-    provincias_cbo = ttk.Combobox(grupo,textvariable=provincia, width=47, state="readonly")
-    provincias_cbo['values']= ["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
-    provincias_cbo.grid(row=1, column=1, pady=10,padx=10)
-
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteProvinciaES(provincia,matriz))
-    generar_btn.grid(row=2, column=0, columnspan=2, padx=5, pady=35)
-
-    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
-    regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
-
 ############################################## Por EDAD
-def porEdad(mainFrame,corazon_img,matriz):
+def porEdad(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
-    Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
+    Entradas: -mainFrame: mainFrameEl contenedor(frame) - lista: La base de datos para buscar el reporte
     Salidas: NA
     """
     limpiarFrame(mainFrame)
@@ -107,17 +81,17 @@ def porEdad(mainFrame,corazon_img,matriz):
     edadFin_txt = ttk.Entry(grupo,textvariable=edadFin, width=50)
     edadFin_txt.grid(row=1, column=1, pady=10,padx=10)
 
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteEdadES(edadIn,edadFin,matriz))
+    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteEdadES(edadIn,edadFin,lista))
     generar_btn.grid(row=2, column=0, columnspan=2, padx=5, pady=35)
 
-    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
+    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,lista))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
 
 ############################################## Por Tipo de Licencia
-def porTipoLicencia(mainFrame,corazon_img,matriz):
+def porTipoLicencia(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
-    Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
+    Entradas: -mainFrame: mainFrameEl contenedor(frame) - lista: La base de datos para buscar el reporte
     Salidas: NA
     """
     limpiarFrame(mainFrame)
@@ -133,16 +107,16 @@ def porTipoLicencia(mainFrame,corazon_img,matriz):
     tipoLicencia_cbo['values']= ["A","B","C","D","E"]
     tipoLicencia_cbo.grid(row=3, column=1, pady=10,padx=10)
 
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,matriz))
+    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,lista))
     generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
 
-    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
+    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,lista))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
 
-def porSede(mainFrame,corazon_img,matriz):
+def porSede(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
-    Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
+    Entradas: -mainFrame: mainFrameEl contenedor(frame) - lista: La base de datos para buscar el reporte
     Salidas: NA
     """
     limpiarFrame(mainFrame)
@@ -159,19 +133,32 @@ def porSede(mainFrame,corazon_img,matriz):
                'Río Claro de Golfito','San Carlos']
     sede_cbo.grid(row=3, column=1, pady=10,padx=10)
     
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,matriz))
+    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,lista))
     generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
 
-    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
+    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,lista))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
 
-def reporteProvinciaES(provincia,matriz):
+
+###Backend
+
+def reporteTotalidadES(lista):
+    try:
+        reporteFichaLarga("reporte_total_"+generarFechaExp()+".xlsx",lista)
+        messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
+        abrirPage("reporte_total_"+generarFechaExp()+".xlsx")
+    except:
+        messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
+
+
+
+def reporteProvinciaES(provincia,lista):
     provincia = provincia.get()
     provincia = obtenerIndexLugar(provincia)
-    crearArchivo("provincia.html",reportePlantillaCorta(sacarDonantesProvincia(provincia,sacarDonantesActivos(matriz)),"provincia"))
+    crearArchivo("provincia.html",reportePlantillaCorta(sacarDonantesProvincia(provincia,sacarDonantesActivos(lista)),"provincia"))
     abrirPage("provincia.html")
 
-def reporteEdadES(edadIn,edadFin,matriz):
+def reporteEdadES(edadIn,edadFin,lista):
     edadIn = edadIn.get()
     edadFin = edadFin.get()
     if not validarEntero(edadFin) or not validarEntero(edadIn):
@@ -182,43 +169,39 @@ def reporteEdadES(edadIn,edadFin,matriz):
         messagebox.showwarning(title=tittle, message="Hay un conflicto en las edades")
     else:
         edadIn
-        print(edadIn,edadFin,matriz[2][2])
-        crearArchivo("rango.html",reportePlantillaCorta(sacarDonantesRangoEdad(int(edadIn), int(edadFin), sacarDonantesActivos(matriz)),"rango de edad"))
+        print(edadIn,edadFin,lista[2][2])
+        crearArchivo("rango.html",reportePlantillaCorta(sacarDonantesRangoEdad(int(edadIn), int(edadFin), sacarDonantesActivos(lista)),"rango de edad"))
         abrirPage("rango.html")
 
-def reporteTipoSangreES(tipoSangre,matriz):
+def reporteTipoSangreES(tipoSangre,lista):
     tipoSangre = tipoSangre.get()
     if not validarVacio(tipoSangre):
         messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
     else:
-        crearArchivo("sangre.html",reportePlantillaCorta(sacarDonantesTipoSangre(tipoSangre,sacarDonantesActivos(matriz)),"tipo de sangre"))
+        crearArchivo("sangre.html",reportePlantillaCorta(sacarDonantesTipoSangre(tipoSangre,sacarDonantesActivos(lista)),"tipo de sangre"))
         abrirPage("sangre.html")
 
-def reporteTotalES(matriz):
-    crearArchivo("total.html",reporteTotal(sacarDonantesActivos(matriz)))
+def reporteTotalES(lista):
+    crearArchivo("total.html",reporteTotal(sacarDonantesActivos(lista)))
     abrirPage("total.html")
 
-def reporteMujeresONegativoES(matriz):
-    crearArchivo("total.html",reportePlantillaCorta(sacarMujeresONegativo(sacarDonantesActivos(matriz)),"mujeres donantes O-"))
+def reporteMujeresONegativoES(lista):
+    crearArchivo("total.html",reportePlantillaCorta(sacarMujeresONegativo(sacarDonantesActivos(lista)),"mujeres donantes O-"))
     abrirPage("total.html")
 
 
-def reporteAquienPuedeDonarES(tipoSangre,matriz):
+def reporteAquienPuedeDonarES(tipoSangre,lista):
     tipoSangre = tipoSangre.get()
     if not validarVacio(tipoSangre):
         messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
     else:
-        crearArchivo("aquienDonar.html",reporteSangre(sacarAquienPuedeDonar(tipoSangre,sacarDonantesActivos(matriz)),"a quien puedo donar"))
+        crearArchivo("aquienDonar.html",reporteSangre(sacarAquienPuedeDonar(tipoSangre,sacarDonantesActivos(lista)),"a quien puedo donar"))
         abrirPage("aquienDonar.html")
 
-def reporteDeQuienPuedeRecibirES(tipoSangre,matriz):
+def reporteDeQuienPuedeRecibirES(tipoSangre,lista):
     tipoSangre = tipoSangre.get()
     if not validarVacio(tipoSangre):
         messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
     else:
-        crearArchivo("dequienRecibir.html",reporteSangre(sacarDeQuienPuedeRecibir(tipoSangre,sacarDonantesActivos(matriz)),"de quien puedo recibir"))
+        crearArchivo("dequienRecibir.html",reporteSangre(sacarDeQuienPuedeRecibir(tipoSangre,sacarDonantesActivos(lista)),"de quien puedo recibir"))
         abrirPage("dequienRecibir.html")
-
-def reporteNoActivosES(matriz):
-    crearArchivo("noActivos.html",reporteNoActivos(sacarNoActivos(matriz)))
-    abrirPage("noActivos.html")

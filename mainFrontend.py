@@ -13,7 +13,8 @@ Documentación IMPORTANTE:
 from tkinter import PhotoImage
 import tkinter as tk
 from generarXML import *
-from ingresar import*
+from renovar import*
+from crearPDF import*
 from generar import*
 from eliminar import*
 from about import *
@@ -73,12 +74,12 @@ generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias
 actualizar_btn = tk.Button(navFrame, text="Renovar",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:actualizarLicenciaES(mainFrame, card_img, lista))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:RevonvarLicenciaES(mainFrame, card_img, lista))
 actualizar_btn.place(x=50, y=240, width=200)
 
 #Generar PDF
 eliminar_btn = tk.Button(navFrame, text="Generar PDF",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:eliminarES(mainFrame, card_img, lista))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:crearPDF_ES(mainFrame, card_img, lista))
 eliminar_btn.place(x=50, y=320, width=200)
 
 #Reportes de Excel

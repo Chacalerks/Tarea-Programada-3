@@ -13,6 +13,7 @@ import time
 from dominate.tags import *
 from archivo import *
 from clase import *
+import webbrowser
 
 def determinarPar(num):
     """
@@ -27,6 +28,14 @@ def determinarPar(num):
         return True
     else:
         return False
+
+def obtenerHoraActual():
+    """
+    funcionamiento: Se encarga de obtner la hora actual
+    entradas: Na
+    salidas: Hora Actual
+    """
+    return datetime.now().time().strftime('%H:%M:%S')
 
 def convertirFechaAnnos(fecha):
     """
@@ -161,23 +170,34 @@ def generarDonador():
     """
     return random.choice([True, False])
 
-def traducirLugar(lugar):
+def traducirSede(sede):
     """
-    funcionamiento: Traduce el lugar según corresponda
-    entradas: lugar: lugar a traducir
-    salidas: Traduccion del lugar
+    funcionamiento: Traduce el sede según corresponda
+    entradas: sede: sede a traducir
+    salidas: Traduccion del sede
     """
-    lugares = ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
+    sedes = ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
                'Barrio Sandoval de Moín','Carretera al Aeropuerto Daniel Oduber','Aeropuerto de Nicoya','Chacarita, Calle 138','Pérez Zeledón',
                'Río Claro de Golfito','San Carlos']
     try:
-        if lugar.isdigit():
-            return lugares[int(lugar)]
+        if sede.isdigit():
+            return sedes[int(sede)]
         else:
-            return str(lugares.index(lugar))
+            return str(sedes.index(sede))
     except:
-        return lugar
+        return sede
 
+def traducirSedeReporte(lista):
+    """
+    funcionamiento: itera sobre una lista ejecutando la función que traduce las sedes y devuelve un string con las sedes traducidas
+    entradas: lista: la lista con las sedes
+    salidas: el string con las sedes
+    """
+    salida = ""
+    for i in lista:
+        salida+= traducirSede(i) +"|"
+    return salida
+    
 def generarSede(id):
     """
     funcionamiento: retorna una sede aleatoria con respecto a la cedula
@@ -227,6 +247,20 @@ def obtenerPosicion(cedula, lista):
             return lista.index(i)
     return False
 
+def traducirDonador(donador):
+    """
+    funcionamiento: dependiendo del valor booleano, retorna si o no para donador
+    entradas: donador: el valor booelano
+    salidas: Si: en caso de que donador sea True
+    No: en caso de que el valor booleano sea False
+    """
+    if donador == True:
+        return 'Si'
+    else:
+        return 'No'
+    
+def abrirPage(nombreFile):
+    webbrowser.open_new_tab(nombreFile)
 #----------------------------------------------------------------------------#
 #                           Base de datos                                    #
 #----------------------------------------------------------------------------#
@@ -258,20 +292,38 @@ def renovarLicencia(posicion, lista):
 #----------------------------------------------------------------------------#
 #                           Provincias                                       #
 #----------------------------------------------------------------------------#
-def guardarLugar(datos,dicc):
-    """
-    Funcionamiento: Se encarga guardar los nuevos lugares.
-    Entradas: -datos: datos del lugar dicc: diccionario en el que se va a guardar
-    Salidas: NA
-    """
-    lugares = []
-    lugares = dicc[datos[0]]
-    lugares.append(datos[1])
-    print("esta es la provincia "+datos[0])
-    dicc[datos[0]] = lugares
+
 
 #----------------------------------------------------------------------------#
 #                           Reportes                                         #
 #----------------------------------------------------------------------------#
 
 #Procesamiento
+def reporteFichaLarga(nombreArch,lista):
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'Cédula'
+    sheet['B1'] = 'Nombre'
+    sheet['C1'] = 'FechaNac'
+    sheet['D1'] = 'FechaExp'
+    sheet['E1'] = 'FechaVenc'
+    sheet['F1'] = 'TipoLicen'
+    sheet['G1'] = 'TipoSangre'
+    sheet['H1'] = 'Donador'
+    sheet['I1'] = 'Sede'
+    sheet['J1'] = 'Puntaje'
+    cont = 2
+    for i in lista:
+        sheet['A'+str(cont)] = i.getCedula()
+        sheet['B'+str(cont)] = i.getNombre()
+        sheet['C'+str(cont)] = i.getFechaNac()
+        sheet['D'+str(cont)] = i.getFechaEx()
+        sheet['E'+str(cont)] = i.getFechaVenci()
+        sheet['F'+str(cont)] = i.getTipoLicencia()
+        sheet['G'+str(cont)] = i.getTipoSangre()
+        sheet['H'+str(cont)] = traducirDonador(i.getDonador())
+        sheet['I'+str(cont)] = traducirSedeReporte(i.getSede())
+        sheet['J'+str(cont)] = i.getPuntaje()
+        cont+=1
+            
+    workbook.save(nombreArch)
