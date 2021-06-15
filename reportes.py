@@ -23,51 +23,41 @@ def menuReportes(mainFrame,corazon_img,matriz):
 
     tk.Label(grupo, text="Reportes ",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
 
-    #Por Provincia
-    provincia_btn = tk.Button(grupo, text="Por Provincia",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porProvincia(mainFrame,corazon_img,matriz))
+    #Totalidad de Licencias
+    provincia_btn = tk.Button(grupo, text="Totalidad de Licencias",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porTotalidad(mainFrame,corazon_img,matriz))
     provincia_btn.grid(row=1, column=0,padx=15, pady=35)
 
-    #Por Rango de edad
-    rango_btn = tk.Button(grupo, text="Por Rango de Edad",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20, command=lambda:porEdad(mainFrame,corazon_img,matriz))
+    #Por tipo de licencia
+    rango_btn = tk.Button(grupo, text="Por tipo de licencia",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    width=15,activeforeground="black", bd=0, padx=100, pady=20, command=lambda:porTipoLicencia(mainFrame,corazon_img,matriz))
     rango_btn.grid(row=1, column=1,padx=15, pady=35)
 
-    #Por tipo de sangre
-    sangre_btn = tk.Button(grupo, text="Por Tipo de Sangre",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    #Examen por sanción
+    sangre_btn = tk.Button(grupo, text="Examen por sanción",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
     width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porTipoSangre(mainFrame,corazon_img,matriz))
     sangre_btn.grid(row=2, column=0,padx=15, pady=35)
 
-    #Lista completa de donadores
-    completos_btn = tk.Button(grupo, text="Lista Completa de Donadores",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    #Los donantes de órganos
+    completos_btn = tk.Button(grupo, text="Los donantes de órganos",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
     width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteTotalES(matriz))
     completos_btn.grid(row=2, column=1,padx=15, pady=35)
 
-    #Mujeresdonantes O-
-    mujeres_btn = tk.Button(grupo, text="Mujeres Donantes O-",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    #Licencia anulada
+    mujeres_btn = tk.Button(grupo, text="Licencia anulada",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
     width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteMujeresONegativoES(matriz))
     mujeres_btn.grid(row=3, column=0,padx=15, pady=35)
 
-    #¿A quién puede donar?
-    donadores_btn = tk.Button(grupo, text="¿A quién puede donar?",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porDonador(mainFrame,corazon_img,matriz))
+    #Licencias por sede
+    donadores_btn = tk.Button(grupo, text="Licencias por sede",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porSede(mainFrame,corazon_img,matriz))
     donadores_btn.grid(row=3, column=1,padx=15, pady=35)
-
-    #¿De quién puede recibir?
-    receptor_btn = tk.Button(grupo, text="¿De quién puede recibir?",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:porReceptor(mainFrame,corazon_img,matriz))
-    receptor_btn.grid(row=4, column=0,padx=15, pady=35)
-
-    #No activos
-    receptor_btn = tk.Button(grupo, text="Donadores No activos",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteNoActivosES(matriz))
-    receptor_btn.grid(row=4, column=1, padx=15, pady=35)
 
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:cargarInicio(mainFrame,corazon_img))
     regresar_btn.grid(row=0, column=2, columnspan=2, pady=10, padx=150, sticky=E)
 
 ############################################## Por Provincia
-def porProvincia(mainFrame,corazon_img,matriz):
+def porTotalidad(mainFrame,corazon_img,matriz):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
     Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
@@ -123,8 +113,8 @@ def porEdad(mainFrame,corazon_img,matriz):
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
 
-############################################## Por Tipo de sangre
-def porTipoSangre(mainFrame,corazon_img,matriz):
+############################################## Por Tipo de Licencia
+def porTipoLicencia(mainFrame,corazon_img,matriz):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
     Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
@@ -134,14 +124,14 @@ def porTipoSangre(mainFrame,corazon_img,matriz):
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
 
-    tk.Label(grupo, text="Reportes ",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
+    tk.Label(grupo, text="Reportes por tipo de Licencia",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
 
-    #Tipo de Sangre
-    tipoSangre = StringVar()
-    tk.Label(grupo, text="Tipo de Sangre: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=3, column=0, pady=10,padx=10, sticky=E)
-    tipoSangre_cbo = ttk.Combobox(grupo,textvariable=tipoSangre, width=47, state="readonly")
-    tipoSangre_cbo['values']= ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
-    tipoSangre_cbo.grid(row=3, column=1, pady=10,padx=10)
+    #Tipo de licencia
+    tipoLicencia = StringVar()
+    tk.Label(grupo, text="Tipo de Licencia: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=3, column=0, pady=10,padx=10, sticky=E)
+    tipoLicencia_cbo = ttk.Combobox(grupo,textvariable=tipoLicencia, width=47, state="readonly")
+    tipoLicencia_cbo['values']= ["A","B","C","D","E"]
+    tipoLicencia_cbo.grid(row=3, column=1, pady=10,padx=10)
 
     generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,matriz))
     generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
@@ -149,7 +139,7 @@ def porTipoSangre(mainFrame,corazon_img,matriz):
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
 
-def porDonador(mainFrame,corazon_img,matriz):
+def porSede(mainFrame,corazon_img,matriz):
     """
     Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
     Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
@@ -159,41 +149,17 @@ def porDonador(mainFrame,corazon_img,matriz):
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
 
-    tk.Label(grupo, text="¿A quién puede donar?",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
+    tk.Label(grupo, text="Sedes",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
 
-    #Tipo de Sangre
-    tipoSangre = StringVar()
-    tk.Label(grupo, text="Tipo de Sangre: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=3, column=0, pady=10,padx=10, sticky=E)
-    tipoSangre_cbo = ttk.Combobox(grupo,textvariable=tipoSangre, width=47, state="readonly")
-    tipoSangre_cbo['values']= ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
-    tipoSangre_cbo.grid(row=3, column=1, pady=10,padx=10)
-
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteAquienPuedeDonarES(tipoSangre,matriz))
-    generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
-
-    regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))
-    regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=300,  sticky=E)
-
-def porReceptor(mainFrame,corazon_img,matriz):
-    """
-    Funcionamiento: Es el mini formulario para que el usuario cree el reporte.
-    Entradas: -mainFrame: mainFrameEl contenedor(frame) - matriz: La base de datos para buscar el reporte
-    Salidas: NA
-    """
-    limpiarFrame(mainFrame)
-    grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
-    grupo.pack(fill=tk.BOTH,expand=1)
-
-    tk.Label(grupo, text="¿De quién puede recibir?",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
-
-    #Tipo de Sangre
-    tipoSangre = StringVar()
-    tk.Label(grupo, text="Tipo de Sangre: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=3, column=0, pady=10,padx=10, sticky=E)
-    tipoSangre_cbo = ttk.Combobox(grupo,textvariable=tipoSangre, width=47, state="readonly")
-    tipoSangre_cbo['values']= ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
-    tipoSangre_cbo.grid(row=3, column=1, pady=10,padx=10)
-
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteDeQuienPuedeRecibirES(tipoSangre,matriz))
+    sede = StringVar()
+    tk.Label(grupo, text="Sede: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=3, column=0, pady=10,padx=10, sticky=E)
+    sede_cbo = ttk.Combobox(grupo,textvariable=sede, width=47, state="readonly")
+    sede_cbo['values']= ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
+               'Barrio Sandoval de Moín','Carretera al Aeropuerto Daniel Oduber','Aeropuerto de Nicoya','Chacarita, Calle 138','Pérez Zeledón',
+               'Río Claro de Golfito','San Carlos']
+    sede_cbo.grid(row=3, column=1, pady=10,padx=10)
+    
+    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,matriz))
     generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
 
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,matriz))

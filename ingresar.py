@@ -84,28 +84,44 @@ def insertarDonadorES(mainFrame,corazon_img,matriz,datos=[],categoria="I",dicc="
         regresar_btn.configure(command=lambda:actulizarDonadorES(mainFrame, corazon_img, matriz))
         
 
-def actulizarDonadorES(mainFrame,corazon_img,matriz):
+def actualizarLicenciaES(mainFrame,corazon_img,lista):
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
     cedula = StringVar()
+    
+    tk.Label(grupo, text="Renovar Licencia",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=50).grid(row=0, column=0, columnspan=2,padx=10,sticky=E)
     #Cédula
-    tk.Label(grupo, text="Cédula: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=0, column=0, pady=10,padx=10,sticky=E)
-    cedula_txt = ttk.Entry(grupo,textvariable=cedula, width=50)
-    cedula_txt.grid(row=0, column=1, pady=10,padx=10)
+    tk.Label(grupo, text="Cédula: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=1, column=0, pady=10,padx=10,sticky=E)
+    cedula_txt = ttk.Entry(grupo,textvariable=cedula, width=80)
+    cedula_txt.grid(row=1, column=1, pady=10,padx=10, columnspan=2)
 
-    buscar_btn = ttk.Button(grupo, text="Buscar",width=40,padding=20, command=lambda:buscarCedula(mainFrame,corazon_img,matriz,cedula))
-    buscar_btn.grid(row=2, column=1,padx=5, pady=35)
-
+    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:buscarCedula(mainFrame,corazon_img,lista,cedula))
+    buscar_btn.grid(row=4, column=1,padx=5, pady=80)
+    
+    limpiar_btn = ttk.Button(grupo, text="Limpiar",width=25,padding=10, command=lambda:limpiarCampos([cedula]))
+    limpiar_btn.grid(row=4, column=2,padx=5, pady=80)
+    
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0, command=lambda:cargarInicio(mainFrame,corazon_img))
-    regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=450,  sticky=E)
-
-def buscarCedula(mainFrame,corazon_img,matriz,cedula):
+    regresar_btn.grid(row=0,rowspan=2, column=3, columnspan=2, pady=10,padx=300,  sticky=E)
+    
+    
+def buscarCedula(mainFrame,corazon_img,lista,cedula):
     cedula=cedula.get()
-    if validarExistente(cedula,matriz):
-        print(obtenerDatosDonador(cedula,matriz))
-        insertarDonadorES(mainFrame,corazon_img,matriz,obtenerDatosDonador(cedula,matriz),"asdf") # Crear la función que devuelve los datos buscados
-
+    if not validarExistente(cedula,lista):
+        messagebox.showwarning(title=tittle, message="No se ha encontrado la licencia ligada a esta cédula")
+    elif validarPuntaje(obtenerPosicion(cedula,lista),lista) == 'a':
+        messagebox.showwarning(title=tittle, message="No puede renovar su licencia hasta que vuelva a hacer el examen teórico")
+    elif validarPuntaje(obtenerPosicion(cedula,lista),lista) == False:
+        messagebox.showwarning(title=tittle, message="Su puntaje es de 0, y por ende no podrá renovar su licencia")
+    else:
+        if messagebox.askquestion(title=tittle, message="¿Desea renovar su licencia?") =="yes":
+            renovarLicencia(obtenerPosicion(cedula,lista),lista)
+            guardarDatos('datos',lista)
+            messagebox.showwarning(title=tittle, message="Se ha renovado su licencia!!")
+        else:
+            messagebox.showinfo(title=tittle, message="No se ha renovado su licencia")
+        
 
     
 def ingresarDatosValidaciones(mainFrame,corazon_img,datos,matriz,categoria,dicc):

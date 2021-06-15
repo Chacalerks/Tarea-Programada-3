@@ -23,13 +23,12 @@ from funciones import *
 from archivo import *
 from validaciones import *
 from reportes import *
-matriz= []
-matriz = leerDatos('datos')
-dicc = leerDatos('provincias')
+lista= []
+lista = leerDatos('datos')
 
-print(matriz)
+print(lista[0].getCedula())
+print(lista[0].getFechaVenci())
 print("\n\n")
-print(dicc)
 
 
 
@@ -64,32 +63,32 @@ corazon_lb.pack(side="top")
 #Botones de navegación:
 #Crear XML
 insertar_btn = tk.Button(navFrame, text="Crear XML",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:insertarDonadorES(mainFrame, card_img, matriz,[],"I",dicc))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:insertarDonadorES(mainFrame, card_img, lista,[],"I",dicc))
 insertar_btn.place(x=50, y=80, width=200)
 
 #Generar Licencias
-generar_btn = tk.Button(navFrame, text="Generar lincencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img, matriz))
+generar_btn = tk.Button(navFrame, text="Generar licencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
+activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img, lista))
 generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias
 actualizar_btn = tk.Button(navFrame, text="Renovar",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:actulizarDonadorES(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:actualizarLicenciaES(mainFrame, card_img, lista))
 actualizar_btn.place(x=50, y=240, width=200)
 
 #Generar PDF
 eliminar_btn = tk.Button(navFrame, text="Generar PDF",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:eliminarES(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:eliminarES(mainFrame, card_img, lista))
 eliminar_btn.place(x=50, y=320, width=200)
 
 #Reportes de Excel
 provincia_btn = tk.Button(navFrame, text="Reportes de Excel",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,  command=lambda:menuReportes(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5,  command=lambda:menuReportes(mainFrame, card_img, lista))
 provincia_btn.place(x=50, y=400, width=200)
 
 #Acerca de 
 acerca_btn = tk.Button(navFrame, text="Acerca de",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:about(mainFrame, card_img, matriz))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:about(mainFrame, card_img, lista))
 acerca_btn.place(x=50, y=480,width=200)
 
 

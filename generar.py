@@ -11,7 +11,7 @@ from validaciones import *
 from funciones import *
 from archivo import *
 
-def generarDonadorES(mainFrame,corazon_img,matriz):
+def generarDonadorES(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Se encarga de crear todos lo elementos del formulario insertar.
     Entradas: -mainFrame: mainFrameEl contenedor(frame)
@@ -24,30 +24,18 @@ def generarDonadorES(mainFrame,corazon_img,matriz):
     cantidad.set(1)
     #Cantidad
     tk.Label(grupo, text="Cantidad: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=0, column=0, pady=10,padx=10,sticky=E)
-    cantidad_spb = ttk.Spinbox(grupo,textvariable=cantidad,from_=1,to=4000000,width=50,state="readonly")
+    cantidad_spb = ttk.Spinbox(grupo,textvariable=cantidad,from_=1,to=250,width=50,state="readonly")
     cantidad_spb.grid(row=0, column=1, pady=10,padx=10)
 
     #Generar Bonotes
-    generar_btn = ttk.Button(grupo, text="Generar Donadores",width=40,padding=20, command=lambda:generarDonadoresValidaciones(cantidad,matriz))
+    generar_btn = ttk.Button(grupo, text="Generar Licencias",width=40,padding=20, command=lambda:generarLicenciasValidaciones(cantidad,lista))
     generar_btn.grid(row=9, column=1,padx=5, pady=35)
 
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0, command=lambda:cargarInicio(mainFrame,corazon_img))
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=450,  sticky=E)
 
-def generarDonadoresValidaciones(cantidad,matriz):
+def generarLicenciasValidaciones(cantidad,lista):
     cantidad = cantidad.get()
-    generarDonadores(cantidad,matriz)
-    guardarDatos('datos',matriz)
-    messagebox.showinfo(title=tittle, message="Se han generado "+str(cantidad)+" donadores correctamente")
-
-"""
-dicc = {'San Jose':['El banco nacional de sangre', 'Hospital Mexico', 'Hospital San Juan de Dios'],
-           'Alajuela':['Hospiital San Rafael de Alajuela','Hospital de San Ramon','Hospital de Canton Norteno'],
-           'Cartago':['Hospital Max Peralta'],
-           'Heredia':['Hospital San Vicente de Paul'],
-           'Guanacaste':['Hospital La Anexión de Nicoya','Hospital Enrique Baltodano de Liberia'],
-           'Puntarenas':['Hospital Monseñor Sanabria'],
-           'Limon':['Hospital Tony Facio','Hospital de Gupiles']}
-
-guardarDatos('provincias',dicc)
-"""
+    generarLicencias(cantidad,['A1','A2','A3','B1','B2','B3','B4','C1','C2','D1','D2','D3','E1','E2'],lista)
+    guardarDatos('datos',lista)
+    messagebox.showinfo(title=tittle, message="Se han generado "+str(cantidad)+" licencias correctamente")
