@@ -13,8 +13,12 @@ import time
 from dominate.tags import *
 from archivo import *
 from clase import *
+import os
 import webbrowser
 
+#----------------------------------------------------------------------------#
+#                           Funciones Generales                              #
+#----------------------------------------------------------------------------#
 def determinarPar(num):
     """
     Funcionamiento: Determina si el número es par
@@ -46,9 +50,44 @@ def convertirFechaAnnos(fecha):
     annos = int(generarFechaExp()[6:]) - int(fecha[6:])
     return annos
 
-def randomEmail(y):
-       email = ''.join(random.choice(string.ascii_lowercase) for x in range(y))
-       return email + random.choice(["@gmail.com","@costarricense.cr","@racsa.go.cr","@ccss.sa.cr"])
+def obtenerPosicion(cedula, lista):
+    """
+    funcionamiento: retorna la posicion del objeto en la lista con la cedula especificada
+    entradas: cedula: la cedula a buscar
+    salidas: la posicion del objeto en la lista con la cedula especificada 
+    """
+    for i in lista:
+        if cedula == i.getCedula():
+            return lista.index(i)
+    return False
+
+def obtenerPath():
+    """
+    funcionamiento: se encarga de devolver en string la direccion del archivo que se está ejecutando en cualquier computador
+    entradas: N/A
+    salidas: N/A
+    """
+    return os.path.dirname(os.path.abspath(__file__))
+
+def abrirPage(nombreFile):
+    """
+    funcionamiento: se encarga de abrir el archivo que sea indicado por el nombre con el navegador
+    entradas: nombreFile: el nombre del archivo a abrir
+    salidas: N/A
+    """
+    webbrowser.open_new_tab(nombreFile)
+
+def abrirFile(nombreFile):
+    """
+    funcionamiento: se encarga de abrir el archivo que sea indicado por el nombre con la aplicacion por defecto
+    entradas: nombreFile: el nombre del archivo a abrir
+    salidas: N/A
+    """
+    os.startfile(obtenerPath()+"\ReportesExcel\\"+nombreFile)
+
+#----------------------------------------------------------------------------#
+#                           Generar Licencia                                 #
+#----------------------------------------------------------------------------#
 
 def str_time_prop(start, end, time_format, prop):
     """
@@ -170,34 +209,6 @@ def generarDonador():
     """
     return random.choice([True, False])
 
-def traducirSede(sede):
-    """
-    funcionamiento: Traduce el sede según corresponda
-    entradas: sede: sede a traducir
-    salidas: Traduccion del sede
-    """
-    sedes = ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
-               'Barrio Sandoval de Moín','Carretera al Aeropuerto Daniel Oduber','Aeropuerto de Nicoya','Chacarita, Calle 138','Pérez Zeledón',
-               'Río Claro de Golfito','San Carlos']
-    try:
-        if sede.isdigit():
-            return sedes[int(sede)]
-        else:
-            return str(sedes.index(sede))
-    except:
-        return sede
-
-def traducirSedeReporte(lista):
-    """
-    funcionamiento: itera sobre una lista ejecutando la función que traduce las sedes y devuelve un string con las sedes traducidas
-    entradas: lista: la lista con las sedes
-    salidas: el string con las sedes
-    """
-    salida = ""
-    for i in lista:
-        salida+= traducirSede(i) +"|"
-    return salida
-    
 def generarSede(id):
     """
     funcionamiento: retorna una sede aleatoria con respecto a la cedula
@@ -235,17 +246,40 @@ def generarCorreo(nombre):
     """
     partes = nombre.split()
     return (partes[1]+partes[2][0]+partes[0][0]).lower() + "@gmail.com"
+#----------------------------------------------------------------------------#
+#                           Traducciones                                     #
+#----------------------------------------------------------------------------#
 
-def obtenerPosicion(cedula, lista):
+#Las funciones de traducir se encargan de hacer la conversion de un valor almacenado de cierta manera
+# en la base de datos, y devolver su equivalente mostrable al usuario y viceversa
+
+def traducirSede(sede):
     """
-    funcionamiento: retorna la posicion del objeto en la lista con la cedula especificada
-    entradas: cedula: la cedula a buscar
-    salidas: la posicion del objeto en la lista con la cedula especificada 
+    funcionamiento: Traduce el sede según corresponda
+    entradas: sede: sede a traducir
+    salidas: Traduccion del sede
     """
+    sedes = ['San José, San Sebastián','Montecillos Alajuela','Tránsito Cartago','Barva de Heredia','Tránsito San Ramón','Guapiles, Ruta 32',
+               'Barrio Sandoval de Moín','Carretera al Aeropuerto Daniel Oduber','Aeropuerto de Nicoya','Chacarita, Calle 138','Pérez Zeledón',
+               'Río Claro de Golfito','San Carlos']
+    try:
+        if sede.isdigit():
+            return sedes[int(sede)]
+        else:
+            return str(sedes.index(sede))
+    except:
+        return sede
+
+def traducirSedeReporte(lista):
+    """
+    funcionamiento: itera sobre una lista ejecutando la función que traduce las sedes y devuelve un string con las sedes traducidas
+    entradas: lista: la lista con las sedes
+    salidas: el string con las sedes
+    """
+    salida = ""
     for i in lista:
-        if cedula == i.getCedula():
-            return lista.index(i)
-    return False
+        salida+= traducirSede(i) +"|"
+    return salida
 
 def traducirDonador(donador):
     """
@@ -258,9 +292,6 @@ def traducirDonador(donador):
         return 'Si'
     else:
         return 'No'
-    
-def abrirPage(nombreFile):
-    webbrowser.open_new_tab(nombreFile)
 #----------------------------------------------------------------------------#
 #                           Base de datos                                    #
 #----------------------------------------------------------------------------#
@@ -287,11 +318,6 @@ def renovarLicencia(posicion, lista):
     else:
         fecha = fecha[0:6] + str(int(fecha[6:])+5)
     lista[posicion].setFechaVenci(fecha)
-    
-
-#----------------------------------------------------------------------------#
-#                           Provincias                                       #
-#----------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------#
@@ -299,7 +325,40 @@ def renovarLicencia(posicion, lista):
 #----------------------------------------------------------------------------#
 
 #Procesamiento
+
+def sacarTipoLicencia(tipo, lista):
+    """
+    Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
+    Entradas: -tipo: el tipo de licencia que se busca
+    -lista: la lista con todas la licencias
+    Salidas: nLista: la lista con las licencias que son del tipo especificado
+    """
+    nLista = []
+    for i in lista:
+        if i.getTipoLicencia()[0] == tipo:
+            nLista.append(i)
+    return nLista
+
+def sacarExamenPorSancion(lista):
+    """
+    Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
+    Entradas: -tipo: el tipo de licencia que se busca
+    -lista: la lista con todas la licencias
+    Salidas: nLista: la lista con las licencias que son del tipo especificado
+    """
+    nLista = []
+    for i in lista:
+        if i.getPuntaje() <= 6 and i.getPuntaje() > 0:
+            nLista.append(i)
+    return nLista
+
+#creacion de archivos
 def reporteFichaLarga(nombreArch,lista):
+    """
+    Funcionamiento: crea el archivo excel con la ficha mas larga que incluye todos los datos de una licencia
+    Entradas: nombreArch: el nombre con el que se va a guardar el archivo
+    Salidas: NA
+    """
     workbook = Workbook()
     sheet = workbook.active
     sheet['A1'] = 'Cédula'
@@ -325,5 +384,44 @@ def reporteFichaLarga(nombreArch,lista):
         sheet['I'+str(cont)] = traducirSedeReporte(i.getSede())
         sheet['J'+str(cont)] = i.getPuntaje()
         cont+=1
-            
-    workbook.save(nombreArch)
+    workbook.save("ReportesExcel/"+nombreArch)
+    
+def reporteFichaCorta(nombreArch,lista):
+    """
+    Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
+    Entradas: nombreArch: el nombre con el que se va a guardar el archivo
+    Salidas: NA
+    """
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'Cédula'
+    sheet['B1'] = 'Nombre'
+    sheet['C1'] = 'TipoLicen'
+    cont = 2
+    for i in lista:
+        sheet['A'+str(cont)] = i.getCedula()
+        sheet['B'+str(cont)] = i.getNombre()
+        sheet['C'+str(cont)] = i.getTipoLicencia()
+        cont+=1
+    workbook.save("ReportesExcel/"+nombreArch)
+    
+def reporteFichaDeCuatro(nombreArch,lista):
+    """
+    Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
+    Entradas: nombreArch: el nombre con el que se va a guardar el archivo
+    Salidas: NA
+    """
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'Cédula'
+    sheet['B1'] = 'Nombre'
+    sheet['C1'] = 'TipoLicen'
+    sheet['D1'] = 'Puntaje'
+    cont = 2
+    for i in lista:
+        sheet['A'+str(cont)] = i.getCedula()
+        sheet['B'+str(cont)] = i.getNombre()
+        sheet['C'+str(cont)] = i.getTipoLicencia()
+        sheet['D'+str(cont)] = i.getPuntaje()
+        cont+=1
+    workbook.save("ReportesExcel/"+nombreArch)
