@@ -91,7 +91,6 @@ def validarFormatoFecha(dob):
     else:
         return False
 
-print(validarFormatoFecha("15-01-1994"))
 def validarPuntajeFormato(puntaje):
     """
     funcionamiento: se encarga de validar que el puntaje sea entre 12 y 0

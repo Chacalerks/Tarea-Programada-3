@@ -15,6 +15,7 @@ from archivo import *
 from clase import *
 import os
 import webbrowser
+import openpyxl
 
 #----------------------------------------------------------------------------#
 #                           Funciones Generales                              #
@@ -362,8 +363,30 @@ def renovarLicencia(posicion, lista):
 #                           Reportes                                         #
 #----------------------------------------------------------------------------#
 
-#Procesamiento
+def expandirCelda(nombreArchivo):
+    """
+    Funcionamiento: Expandir las celdas del archivo exel.
+    Entradas: nombreArchivo: es el nombre del archivo
+    Salidas: Archivo exel
+    """
+    wb = openpyxl.load_workbook(nombreArchivo)
+    worksheet = wb.active
+    for col in worksheet.columns:
+        max_length = 0
+        column = col[0].column_letter # Get the column name
+        for cell in col:
+            if cell.coordinate in worksheet.merged_cells: # not check merge_cells
+                continue
+            try: # Necessary to avoid error on empty cells
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2)
+        worksheet.column_dimensions[column].width = adjusted_width
+    wb.save(nombreArchivo)
 
+#Procesamiento
 def sacarTipoLicencia(tipo, lista):
     """
     Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
@@ -462,6 +485,7 @@ def reporteFichaLarga(nombreArch,lista, titulo):
         sheet['J'+str(cont)] = i.getPuntaje()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)
     
 def reporteFichaCorta(nombreArch,lista,titulo):
     """
@@ -483,7 +507,8 @@ def reporteFichaCorta(nombreArch,lista,titulo):
         sheet['C'+str(cont)] = i.getTipoLicencia()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
-    
+    expandirCelda("ReportesExcel/"+nombreArch)
+
 def reporteFichaDeCuatro(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
@@ -506,6 +531,7 @@ def reporteFichaDeCuatro(nombreArch,lista,titulo):
         sheet['D'+str(cont)] = i.getPuntaje()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)
 
 def reporteFichaPuntaje(nombreArch,lista,titulo):
     """
@@ -539,3 +565,4 @@ def reporteFichaPuntaje(nombreArch,lista,titulo):
         sheet['I'+str(cont)] = traducirSedeReporte(i.getSede())
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)
