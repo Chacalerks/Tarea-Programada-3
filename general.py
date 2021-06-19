@@ -26,7 +26,7 @@ def cargarInicio(mainFrame, card_img):
     #tk.Label(mainFrame, text="Donar sangre, es donar vida", font="Bahnschrift 16", bg=color["principal"], fg="white", height=1, padx=20,pady=25).pack(side="top")
 
 def salir():
-    messagebox.showinfo(title=tittle, message="Donar sangre, es donar vida")
+    messagebox.showinfo(title=tittle, message="No olvides gestionar pronto tu licencia")
     exit()
 def limpiarFrame(mainFrame):
     """

@@ -27,18 +27,19 @@ def about(mainFrame,corazon_img,matriz):
     #Creador 1
     textom = "Maynor Erks Martínez Hernández es un \n\
 programador y diseñador nicaragüense, actual  \n\
- CEO, dueño y fundador Férks, siendo vital en \n\
+CEO, dueño y fundador Férks, siendo vital en \n\
 el desarrollo y gestión del proyecto.  \n\
-del C.T.P de General Viejo para el cual ha \n\
-Estudiante egresado realizado proyectos \n\
-en áreas relacionadas. "
+Egresado del C.T.P de General Viejo para \n \
+el cual ha realizado proyectos. \n\
+Actualmente cuenta con 18 años de edad  y \n \
+estudia en el TEC de Costa Rica Ing. Computación"
     creador1 = tk.Frame(grupo, bg=color["principal"])
     creador1.grid(row=1, column=0, padx=20)
     erks_img = PhotoImage(file=".\iconos\maynor.png")
     erks_lb = tk.Label(creador1, image=erks_img, bd=0)
     erks_lb.pack(side="top") 
-    tk.Label(creador1,font="BahnschriftLight 15", text="Maynor Erks Martínez Hernández",justify=LEFT, bg=color["principal"],fg="white",pady=10, padx=20).pack()
-    tk.Label(creador1,font="BahnschriftLight 12", text=textom, bg=color["principal"],fg="white", pady=20, padx=20).pack()
+    tk.Label(creador1,font="BahnschriftLight 15", text="Maynor Erks Martínez Hernández",justify=LEFT, bg=color["principal"],fg="white",pady=5, padx=20).pack()
+    tk.Label(creador1,font="BahnschriftLight 12", text=textom, bg=color["principal"],fg="white", pady=10, padx=20).pack()
     
 
     #Creador 2
@@ -54,8 +55,8 @@ desarrollo del programa."
     cesar_img = PhotoImage(file = ".\iconos\ccesar.png")
     cesar_lb = tk.Label(creador2, image=cesar_img, bd=0)
     cesar_lb.pack(side="top") 
-    tk.Label(creador2,font="BahnschriftLight 15", text="César Johel Jiménez Salazar", bg=color["principal"],fg="white",pady=10,padx=20).pack()
-    tk.Label(creador2,font="BahnschriftLight 12", text=textoc, bg=color["principal"],fg="white", pady=20, padx=20).pack()
+    tk.Label(creador2,font="BahnschriftLight 15", text="César Johel Jiménez Salazar", bg=color["principal"],fg="white",pady=5,padx=20).pack()
+    tk.Label(creador2,font="BahnschriftLight 12", text=textoc, bg=color["principal"],fg="white", pady=10, padx=20).pack()
     
 
 
@@ -64,6 +65,6 @@ desarrollo del programa."
 
     tk.Label(grupo, text="Programa realizado para la III Tarea Programada \n\
 del curso de Taller de Prgramación GR2\n\
-del Tecnológico de Costa Rica.\n\nLa figura del corazón fue creada por: Freepik y recuperada de: www.flaticon.com \n\nVersión 1.5",font="BahnschriftLight 10",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).grid(row=4, column=0)
+del Tecnológico de Costa Rica.\n\nLa figura del corazón fue creada por: Freepik y recuperada de: www.flaticon.com \n\nVersión 1.5",font="BahnschriftLight 10",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).grid(row=3, column=0)
 
     tk.Label(grupo, text="",font="BahnschriftLight 15",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).pack()

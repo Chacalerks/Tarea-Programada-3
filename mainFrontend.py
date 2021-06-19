@@ -12,11 +12,10 @@ Documentación IMPORTANTE:
 
 from tkinter import PhotoImage
 import tkinter as tk
-from generarXML import *
+#from generarXML import *
 from renovar import*
 from crearPDF import*
-from generar import*
-from eliminar import*
+from generarLicencias import*
 from about import *
 from general import*
 from funciones import *
@@ -27,8 +26,8 @@ from reportes import *
 lista = []
 lista = leerDatos('datos')
 
-print(lista[19].mostrarDatos())
-print(lista[20].mostrarDatos())
+print(lista[10].mostrarDatos())
+print(lista[11].mostrarDatos())
 print("\n\n")
 
 
@@ -69,7 +68,7 @@ insertar_btn.place(x=50, y=80, width=200)
 
 #Generar Licencias
 generar_btn = tk.Button(navFrame, text="Generar licencias",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarDonadorES(mainFrame, card_img,leerXML(),lista))
+activeforeground="black", bd=0, padx=60, pady=5,command=lambda:generarLicenciasES(mainFrame, card_img,leerXML(),lista))
 generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias

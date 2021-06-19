@@ -2,7 +2,7 @@
 #Fecha de realización: 13/06/2021 10:10 p.m
 #Última modificación: 
 #Versión: 3.9.5
-from generarXML import crearXML
+#from generarXML import crearXML
 from fpdf import FPDF
 from datetime import datetime
 import tkinter as tk
@@ -13,6 +13,7 @@ from general import *
 from validaciones import *
 from funciones import *
 from archivo import* 
+from clase import* 
     
 
 def crearPDF_ES(mainFrame,corazon_img,lista):
@@ -63,7 +64,7 @@ def crearPDf(datos):
     """
     pdf = FPDF('P', 'mm',(150,90))
     pdf.add_page()
-    pdf.add_font('sysfont', '', r"D:\TEC\I SEMESTRE\Intro-Taller (Laura)\Taller\Tareas\Tarea Programada 3\Tarea-Programada-3\arial\arial.ttf", uni=True)
+    pdf.add_font('sysfont', '', r"./arial/arial.ttf", uni=True)
     pdf.set_font('arial', '', 16)
 
     # El titulo de COSTA RICA
@@ -143,9 +144,9 @@ def crearPDf(datos):
     # Hora Actual
     pdf.set_font('arial', '', 10)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(10, 5, obtenerFechaActual()+" "+obtenerHoraActual()+ " No se que es esto")
+    pdf.cell(10, 5, generarFechaExp()+" "+obtenerHoraActual()+ " "+traducirSedeReporte(datos[8]))
     crearArchivo(pdf)
-
+        
 def crearArchivo(pdf):
     """
     Funcionamiento: Se encarga de validar que el archivo no esté abierto
@@ -153,8 +154,8 @@ def crearArchivo(pdf):
     Salidas: Archivo pdf
     """
     try:
-        pdf.output('licencia'+obtenerFechaActual()+'.pdf')
+        pdf.output('licencia'+generarFechaExp()+'.pdf')
         messagebox.showinfo(title=tittle, message="Se ha creado el PDF!")
-        abrirPage('licencia'+obtenerFechaActual()+'.pdf')
+        abrirPage('licencia'+generarFechaExp()+'.pdf')
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el pdf, cierre el archivo abierto!")

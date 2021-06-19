@@ -5,6 +5,8 @@
 
 import re
 from datetime import datetime
+
+from dominate.tags import p
 #----------------------------------------------------------------------------
 #                      Validaciones de Ingresar y Actualizar
 #----------------------------------------------------------------------------
@@ -69,7 +71,7 @@ def validarCedula(id):
     salidas: True: si la cédula SÍ es válida 
     False: si la cédula NO es válida
     """
-    if re.match("^\d\-\d{4}\-\d{4}$",id):
+    if re.match("^[1-9]\d{8}$",id):
         return True
     else:
         return False
@@ -81,11 +83,6 @@ def validarFormatoFecha(dob):
     salidas: True: si la fecha SÍ es válida 
     False: si la fecha NO es válida
     """
-    year = dob[-4:]
-    moth = dob[3:6]
-    day = dob[:3]
-#^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19[0-9][0-9]|20[0-9][0-9])$"
-
     if re.match("^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19[0-9][0-9]|20[0-9][0-9])$", dob):
         try:
             datetime.strptime(dob, '%d/%m/%Y')
@@ -95,34 +92,31 @@ def validarFormatoFecha(dob):
     else:
         return False
 
-def validarEdad(dob):
+def validarPuntaje(puntaje):
     """
-    funcionamiento: se encarga de validar que el donante sea mayor a 18 años
-    entradas: la fecha del donante
-    salidas: true: si el donante es mayor de edad
-    False: si el donante NO es mayor de edad
+    funcionamiento: se encarga de validar que el puntaje sea entre 12 y 0
+    salidas:true/false de la condición dada (puntaje entre 12 y 0)
     """
-    fecha = datetime.strptime(dob, '%d/%m/%Y')
-    resta = datetime.now() - fecha
-    resta = resta.days
-    if resta >= 6575 and resta < 23725+16:
+    if re.match("^[0-9]$|^(1[0-2])$",puntaje):
         return True
     else:
         return False
 
 
-def validarCorreo(correo):
+def validarCorreo(nombre, correo):
     """
     funcionamiento: Se encarga de validar que la el correo electronico del donador sea valido
     entradas: correo: el correo electronico del donador
     salidas: True: si el correo SÍ es válida 
     False: si el correo NO es válida
     """
-    if re.match("^[a-z0-9]+[\.'\-a-z0-9_]*[a-z0-9]+@(gmail.com|costarricense.cr|racsa.go.cr|ccss.sa.cr)$",correo.lower()):
+    partes = nombre.split()
+
+    if re.match("^("+(partes[1]+partes[2][0]+partes[0][0]).lower()+"@gmail.com)$",correo):
         return True
     else:
         return False
-   
+
 
 def validarExistente(id, matriz):
     """
