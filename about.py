@@ -3,14 +3,10 @@
 #Última modificación:24/05/2021 1:20  a.m
 #Versión: 3.9.5
 from tkinter import PhotoImage
-from PIL import  Image
-from tkinter import messagebox
 from archivo import *
 from funciones import *
 import tkinter as tk
-from tkinter import StringVar, ttk
 from tkinter.constants import LEFT
-from typing import Text
 from general import *
 from validaciones import *
 from funciones import *
@@ -65,6 +61,6 @@ desarrollo del programa."
 
     tk.Label(grupo, text="Programa realizado para la III Tarea Programada \n\
 del curso de Taller de Prgramación GR2\n\
-del Tecnológico de Costa Rica.\n\nLa figura del corazón fue creada por: Freepik y recuperada de: www.flaticon.com \n\nVersión 1.5",font="BahnschriftLight 10",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).grid(row=3, column=0)
+del Tecnológico de Costa Rica.\n\nLa figura del ID fue creada por: Freepik y recuperada de: www.flaticon.com \n\nVersión 1.5",font="BahnschriftLight 10",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).grid(row=3, column=0)
 
     tk.Label(grupo, text="",font="BahnschriftLight 15",justify=LEFT, bg=color["fondo"],fg="black", pady=50, padx=20).pack()

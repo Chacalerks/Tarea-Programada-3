@@ -2,20 +2,20 @@
 #Fecha de realización: 13/06/2021 10:10 p.m
 #Última modificación: 
 #Versión: 3.9.5
-#from generarXML import crearXML
+
 from fpdf import FPDF
-from datetime import datetime
 import tkinter as tk
 from tkinter import StringVar, ttk, messagebox
 from tkinter.constants import E
-from typing import Text
 from general import *
 from validaciones import *
 from funciones import *
 from archivo import* 
 from clase import* 
-    
-
+""" 
+DOCUMENTACIÓN
++ El campo de mostrar si es donador se deció que en caso de no ser donador, no se escriba nada, ya que así se encontró en internet. 
+"""
 def crearPDF_ES(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Se encarga de ES
@@ -145,17 +145,17 @@ def crearPDf(datos):
     pdf.set_font('arial', '', 10)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(10, 5, generarFechaExp()+" "+obtenerHoraActual()+ " "+traducirSedeReporte(datos[8]))
-    crearArchivo(pdf)
+    crearArchivo(pdf, datos[0])
         
-def crearArchivo(pdf):
+def crearArchivo(pdf, cedula):
     """
     Funcionamiento: Se encarga de validar que el archivo no esté abierto
     Entradas: pdf: objeto de pdf
     Salidas: Archivo pdf
     """
     try:
-        pdf.output('licencia'+generarFechaExp()+'.pdf')
+        pdf.output('LicenciasPDF/licencia_'+cedula+'.pdf')
         messagebox.showinfo(title=tittle, message="Se ha creado el PDF!")
-        abrirPage('licencia'+generarFechaExp()+'.pdf')
+        abrirFile('licencia_'+cedula+'.pdf', "LicenciasPDF")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el pdf, cierre el archivo abierto!")

@@ -12,7 +12,7 @@ Documentación IMPORTANTE:
 
 from tkinter import PhotoImage
 import tkinter as tk
-#from generarXML import *
+from generarXML import *
 from renovar import*
 from crearPDF import*
 from generarLicencias import*
@@ -26,9 +26,6 @@ from reportes import *
 lista = []
 lista = leerDatos('datos')
 
-print(lista[10].mostrarDatos())
-print(lista[11].mostrarDatos())
-print("\n\n")
 
 
 
@@ -73,7 +70,7 @@ generar_btn.place(x=50, y=160, width=200)
 
 #Renovar Licencias
 actualizar_btn = tk.Button(navFrame, text="Renovar",font="BahnschriftLight 12", bg=color["caja"],fg="black", activebackground="black",\
-activeforeground="black", bd=0, padx=60, pady=5, command=lambda:RevonvarLicenciaES(mainFrame, card_img, lista))
+activeforeground="black", bd=0, padx=60, pady=5, command=lambda:renovarLicenciaES(mainFrame, card_img, lista))
 actualizar_btn.place(x=50, y=240, width=200)
 
 #Generar PDF

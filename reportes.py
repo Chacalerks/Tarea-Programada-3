@@ -15,6 +15,12 @@ from validaciones import *
 from funciones import *
 from archivo import*
 
+"""
+DOCUMENTACIÓN
++ En caso de que no existan licencias que cumplan los criterios de búsqueda de algún reporte, de igual forma se generará el reporte vació ya que es importante
+    notar que no hay licencias con esos parámetros 
+"""
+
 def menuReportes(mainFrame,corazon_img,lista):
     """
     Funcionamiento: Carga el menú de los reportes.
@@ -122,9 +128,9 @@ def reporteTotalidadES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaLarga("reporte_total_"+generarFechaExp()+".xlsx",lista)
+        reporteFichaLarga("reporte_total_"+generarFechaExp()+".xlsx",lista, "Totalidad de licencias")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_total_"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_total_"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
 
@@ -140,9 +146,9 @@ def reporteTipoLicenciaES(tipoLicencia,lista):
         if not validarVacio(tipoLicencia):
             messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
         else:
-            reporteFichaCorta("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx",sacarTipoLicencia(tipoLicencia,lista))
+            reporteFichaCorta("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx",sacarTipoLicencia(tipoLicencia,lista),"Por tipo de licencia ")
             messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-            abrirFile("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx")
+            abrirFile("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
         
@@ -153,9 +159,9 @@ def reporteExamenPorSancionES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaDeCuatro("reporte_examen_sancion_"+generarFechaExp()+".xlsx",sacarExamenPorSancion(lista))
+        reporteFichaDeCuatro("reporte_examen_sancion_"+generarFechaExp()+".xlsx",sacarExamenPorSancion(lista), "Examen por sanción ")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_examen_sancion_"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_examen_sancion_"+generarFechaExp()+".xlsx", "ReportesExcel")
         
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
@@ -167,9 +173,9 @@ def reporteDonanteOrganosES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaCorta("reporte_donante_organo_"+generarFechaExp()+".xlsx",sacarDonatesOrganos(lista))
+        reporteFichaCorta("reporte_donante_organo_"+generarFechaExp()+".xlsx",sacarDonatesOrganos(lista),"Los donantes de órganos")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_donante_organo_"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_donante_organo_"+generarFechaExp()+".xlsx", "ReportesExcel")
         
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
@@ -181,9 +187,9 @@ def reporteLicenciaAnuladaES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaPuntaje("reporte_licencias_anuladas"+generarFechaExp()+".xlsx",sacarLicenciasAnuladas(lista))
+        reporteFichaPuntaje("reporte_licencias_anuladas"+generarFechaExp()+".xlsx",sacarLicenciasAnuladas(lista), "Licencia anulada")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_licencias_anuladas"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_licencias_anuladas"+generarFechaExp()+".xlsx", "ReportesExcel")
         
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
@@ -199,8 +205,8 @@ def reportePorSedeES(sede,lista):
         if not validarVacio(sede):
             messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
         else:
-            reporteFichaLarga("reporte_por_sede"+generarFechaExp()+".xlsx",sacarPorSede(lista, traducirSede(sede)))
+            reporteFichaLarga("reporte_por_sede"+generarFechaExp()+".xlsx",sacarPorSede(lista, traducirSede(sede)), "Licencias por sede ")
             messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-            abrirFile("reporte_por_sede"+generarFechaExp()+".xlsx")
+            abrirFile("reporte_por_sede"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")

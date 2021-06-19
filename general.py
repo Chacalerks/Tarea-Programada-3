@@ -6,7 +6,7 @@
 from tkinter import BooleanVar, StringVar
 import tkinter as tk
 from tkinter import messagebox
-import time
+
 
 color = {"fondo":"#FFFFFF", "sidebar":"#343A40", "topbar":"#000000", "caja": "#F9D71D" ,  "principal": "#343A40", "secundario": "#343A40","tercero":"#0E3D5E"}
 tittle = "Sistema de Licencias"
@@ -26,8 +26,14 @@ def cargarInicio(mainFrame, card_img):
     #tk.Label(mainFrame, text="Donar sangre, es donar vida", font="Bahnschrift 16", bg=color["principal"], fg="white", height=1, padx=20,pady=25).pack(side="top")
 
 def salir():
+    """
+    Funcionamiento: Se encarga de cerrar el programa
+    Entradas: Na
+    Salidas: NA
+    """
     messagebox.showinfo(title=tittle, message="No olvides gestionar pronto tu licencia")
     exit()
+
 def limpiarFrame(mainFrame):
     """
     Funcionamiento: Se encarga de crear todos lo elementos del formulario insertar.
@@ -84,6 +90,7 @@ def establecerDatos(datosString):
                     break
             i+=1
     return datos
+    
 def obtenerDatos(datos):
     """
     Funcionamiento: Se encarga de obtener los datos de los campos.

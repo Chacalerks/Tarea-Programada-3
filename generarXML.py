@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from tkinter import messagebox
 from general import *
 from funciones import *
+from tkinter import messagebox
 
 #obtiene el html de la web page
 url = "https://practicatest.cr/blog/licencias/tipos-licencia-conducir-costa-rica"
@@ -99,8 +100,6 @@ def obtenerRequisitos():
         temp+=1
     requisistos.append(filaRequisitos)
 
-
-
 def crearXML():
     """
     Funcionamiento: Se encarga de crear el XMl
@@ -160,11 +159,14 @@ def leerXML():
     Entradas: NA
     Salidas: Lista de licencia
     """
-    lista = []
-    with open('licencia.xml', 'r') as f:
-        data = f.read()
-    Bs_data = BeautifulSoup(data, "xml")
-    NombreSubTipo = Bs_data.find_all('NombreSubTipo')
-    for i in NombreSubTipo:
-        lista.append(i.text[9:][:2])
-    return lista
+    try:
+        lista = []
+        with open('licencia.xml', 'r') as f:
+            data = f.read()
+        Bs_data = BeautifulSoup(data, "xml")
+        NombreSubTipo = Bs_data.find_all('NombreSubTipo')
+        for i in NombreSubTipo:
+            lista.append(i.text[9:][:2])
+        return lista
+    except:
+        messagebox.showwarning(title=tittle, message="No hay ningún archivo .XML para leer.")

@@ -77,13 +77,13 @@ def abrirPage(nombreFile):
     """
     webbrowser.open_new_tab(nombreFile)
 
-def abrirFile(nombreFile):
+def abrirFile(nombreFile, carpeta):
     """
     funcionamiento: se encarga de abrir el archivo que sea indicado por el nombre con la aplicacion por defecto
     entradas: nombreFile: el nombre del archivo a abrir
     salidas: N/A
     """
-    os.startfile(obtenerPath()+"\ReportesExcel\\"+nombreFile)
+    os.startfile(obtenerPath()+"/"+carpeta+"//"+nombreFile)
 
 #----------------------------------------------------------------------------#
 #                           Generar Licencia                                 #
@@ -178,6 +178,7 @@ def generarFechaNacimiento():
     salidas: un nombre aleatorio
     """
     dob = randomDate(generarRangoFecha()[0], generarRangoFecha()[1], random.random())
+
     if validarFormatoFecha(dob):
         return dob
     else:
@@ -210,7 +211,7 @@ def generarFechaVenc(edad):
     if validarFormatoFecha(edadVen):
         return edadVen
     else:
-        return generarFechaVenc(edadVen)
+        return generarFechaVenc(edad)
 
 def generarTipoLicencia(tiposLicencias):
     """
@@ -247,15 +248,15 @@ def generarSede(id):
     elif id == '2':
         return [random.choice(['1','4','12'])]
     elif id == '3':
-        return [random.choice(['2'])]
+        return ['2']
     elif id == '4':
-        return [random.choice(['3'])]
+        return ['3']
     elif id == '5':
         return [random.choice(['7','8'])]
     elif id == '6':
         return [random.choice(['9','11'])]
     else:
-        return [random.choice('5','6')]
+        return [random.choice(['5','6'])]
 
 def generarPuntaje():
     """
@@ -264,7 +265,7 @@ def generarPuntaje():
     salidas: el puntaje
     """
     puntaje = random.randint(0,12)
-    if validarPuntaje(puntaje):
+    if validarPuntajeFormato(puntaje):
         return puntaje
     else:
         return generarPuntaje()
@@ -427,7 +428,7 @@ def sacarPorSede(lista, sede):
     return nLista
 
 #creacion de archivos
-def reporteFichaLarga(nombreArch,lista):
+def reporteFichaLarga(nombreArch,lista, titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas larga que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -435,17 +436,19 @@ def reporteFichaLarga(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'FechaNac'
-    sheet['D1'] = 'FechaExp'
-    sheet['E1'] = 'FechaVenc'
-    sheet['F1'] = 'TipoLicen'
-    sheet['G1'] = 'TipoSangre'
-    sheet['H1'] = 'Donador'
-    sheet['I1'] = 'Sede'
-    sheet['J1'] = 'Puntaje'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'FechaNac'
+    sheet['D3'] = 'FechaExp'
+    sheet['E3'] = 'FechaVenc'
+    sheet['F3'] = 'TipoLicen'
+    sheet['G3'] = 'TipoSangre'
+    sheet['H3'] = 'Donador'
+    sheet['I3'] = 'Sede'
+    sheet['J3'] = 'Puntaje'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
@@ -460,7 +463,7 @@ def reporteFichaLarga(nombreArch,lista):
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
     
-def reporteFichaCorta(nombreArch,lista):
+def reporteFichaCorta(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -468,10 +471,12 @@ def reporteFichaCorta(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'TipoLicen'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'TipoLicen'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
@@ -479,7 +484,7 @@ def reporteFichaCorta(nombreArch,lista):
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
     
-def reporteFichaDeCuatro(nombreArch,lista):
+def reporteFichaDeCuatro(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -487,11 +492,13 @@ def reporteFichaDeCuatro(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'TipoLicen'
-    sheet['D1'] = 'Puntaje'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'TipoLicen'
+    sheet['D3'] = 'Puntaje'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
@@ -500,7 +507,7 @@ def reporteFichaDeCuatro(nombreArch,lista):
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
 
-def reporteFichaPuntaje(nombreArch,lista):
+def reporteFichaPuntaje(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha sin puntaje
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -508,16 +515,18 @@ def reporteFichaPuntaje(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'FechaNac'
-    sheet['D1'] = 'FechaExp'
-    sheet['E1'] = 'FechaVenc'
-    sheet['F1'] = 'TipoLicen'
-    sheet['G1'] = 'TipoSangre'
-    sheet['H1'] = 'Donador'
-    sheet['I1'] = 'Sede'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'FechaNac'
+    sheet['D3'] = 'FechaExp'
+    sheet['E3'] = 'FechaVenc'
+    sheet['F3'] = 'TipoLicen'
+    sheet['G3'] = 'TipoSangre'
+    sheet['H3'] = 'Donador'
+    sheet['I3'] = 'Sede'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()

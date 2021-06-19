@@ -5,16 +5,15 @@
 
 import re
 from datetime import datetime
+"""
+DOCUMENTACIÓN
++ Solo se decidó validar el formata de la fecha, ya que en las instrucciones no especifica ¿qué? exactamente
 
-from dominate.tags import p
+"""
 #----------------------------------------------------------------------------
 #                      Validaciones de Ingresar y Actualizar
 #----------------------------------------------------------------------------
-"""
-Documentación IMPORTANTE:
-+En las intrucciones no decía especificamente el rango de edades para donar, solo referenciaba a un artículo y en este decía que solo en los que los donante no esta 
-    en buenas condiciones de salud no pueden continuar donando con más de 60 años, por lo que decidimos limitarlo a 65 años.
-"""
+
 def validarEntero(num):
     """
     Funcionamiento: Determina si el número es connveritble a  un entero
@@ -83,21 +82,22 @@ def validarFormatoFecha(dob):
     salidas: True: si la fecha SÍ es válida 
     False: si la fecha NO es válida
     """
-    if re.match("^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19[0-9][0-9]|20[0-9][0-9])$", dob):
+    if re.match("^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19[0-9][0-9]|20[0-9][0-9])$", dob):
         try:
-            datetime.strptime(dob, '%d/%m/%Y')
+            datetime.strptime(dob, '%d-%m-%Y')
             return True
         except ValueError:
             return False
     else:
         return False
 
-def validarPuntaje(puntaje):
+print(validarFormatoFecha("15-01-1994"))
+def validarPuntajeFormato(puntaje):
     """
     funcionamiento: se encarga de validar que el puntaje sea entre 12 y 0
     salidas:true/false de la condición dada (puntaje entre 12 y 0)
     """
-    if re.match("^[0-9]$|^(1[0-2])$",puntaje):
+    if re.match("^[0-9]$|^(1[0-2])$",str(puntaje)):
         return True
     else:
         return False
