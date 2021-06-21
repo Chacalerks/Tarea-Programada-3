@@ -31,12 +31,3 @@ def guardarDatos(nomArchGrabar,matriz):
     except:
         print("Error al grabar el archivo: ", nomArchGrabar)
     return
-
-def crearArchivo(nomArchGrabar,html):
-    try:
-        f = open(nomArchGrabar,'w')
-        f.write(html)
-        f.close()
-    except:
-        print("Error al grabar el archivo: index.html")
-    return False

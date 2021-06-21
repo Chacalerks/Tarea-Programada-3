@@ -7,7 +7,7 @@ from validaciones import *
 import names
 import random
 from datetime import datetime
-import string
+from openpyxl import Workbook
 from dateutil.relativedelta import relativedelta
 import time
 from dominate.tags import *
@@ -15,7 +15,38 @@ from archivo import *
 from clase import *
 import os
 import webbrowser
+import openpyxl
+"""
+DOCUMENTACIÓN
 
++ La estrategia para generar las sedes y ligarlas a una licencia, fue crear una lista donde el código que se almacenará
+de esa sede en la base de datos, será la posición que ocupa en dicha lista, y los nombres de cada sede se decidieron por lo
+más característico de la localización de cada una:
+Sede Central
+0 = 'San José, San Sebastián'
+
+Licencias en el Gran Área Metropolitana
+1 = 'Montecillos Alajuela'
+2 = 'Tránsito Cartago'
+3 = 'Barva de Heredia'
+4 = 'Tránsito San Ramón'
+
+Licencias en el Atlántico
+5 = 'Guapiles, Ruta 32'
+6 = 'Barrio Sandoval de Moín'
+
+Licencias en Guanacaste y Puntarenas
+7 = 'Carretera al Aeropuerto Daniel Oduber'
+8 = 'Aeropuerto de Nicoya'
+9 = 'Chacarita, Calle 138'
+
+Licencias en la Zona Sur
+10 = 'Pérez Zeledón'
+11 = 'Río Claro de Golfito'
+
+Licencias en la Zona Norte
+12 = 'San Carlos'
+"""
 #----------------------------------------------------------------------------#
 #                           Funciones Generales                              #
 #----------------------------------------------------------------------------#
@@ -77,13 +108,13 @@ def abrirPage(nombreFile):
     """
     webbrowser.open_new_tab(nombreFile)
 
-def abrirFile(nombreFile):
+def abrirFile(nombreFile, carpeta):
     """
     funcionamiento: se encarga de abrir el archivo que sea indicado por el nombre con la aplicacion por defecto
     entradas: nombreFile: el nombre del archivo a abrir
     salidas: N/A
     """
-    os.startfile(obtenerPath()+"\ReportesExcel\\"+nombreFile)
+    os.startfile(obtenerPath()+"/"+carpeta+"//"+nombreFile)
 
 #----------------------------------------------------------------------------#
 #                           Generar Licencia                                 #
@@ -106,15 +137,30 @@ def str_time_prop(start, end, time_format, prop):
     return time.strftime(time_format, time.localtime(ptime))
 
 def randomDate(start, end, prop):
+    """
+    funcionamiento: Una fecha randon
+    entradas: start: la fecha inicial   -end: la fecha futura -prop: numero aleatorio para sacar la fecha
+    salidas: la fecha aleatoria
+    """
     return str_time_prop(start, end, '%d-%m-%Y', prop)
 
 def generarRangoFecha():
+    """
+    funcionamiento: genera el rango correcto de la fecha
+    entradas: NA
+    salidas:    Un rango de fecha
+    """
     fechaMin = (datetime.today() + relativedelta(years=-18)).strftime('%d-%m-%Y')
     fechaMax = (datetime.today() + relativedelta(years=-50)).strftime('%d-%m-%Y')
     return [fechaMax,fechaMin]
     
 
 def generarLicencias(cant, tiposLicencias, lista):
+    """
+    funcionamiento: genera la cantidad de lincencias aleatorias
+    entradas: cant, tiposLicencias, lista
+    salidas: Guarda las licencias aleatorias
+    """
     cant = int(cant)
     while cant != 0:
         insertarLicencia(randomLicencia(tiposLicencias),lista)
@@ -163,7 +209,11 @@ def generarFechaNacimiento():
     salidas: un nombre aleatorio
     """
     dob = randomDate(generarRangoFecha()[0], generarRangoFecha()[1], random.random())
-    return dob
+
+    if validarFormatoFecha(dob):
+        return dob
+    else:
+        return generarFechaNacimiento()
 
 def generarFechaExp():
     """
@@ -171,7 +221,12 @@ def generarFechaExp():
     entradas: N/A
     salidas: la fecha de hoy en string
     """
-    return time.strftime('%d-%m-%Y', time.localtime())
+    fecha = time.strftime('%d-%m-%Y', time.localtime())
+
+    if validarFormatoFecha(fecha):
+        return fecha
+    else:
+        return generarFechaExp()
 
 def generarFechaVenc(edad):
     """
@@ -183,7 +238,11 @@ def generarFechaVenc(edad):
         edadVen = generarFechaExp()[0:6] + str(int(generarFechaExp()[6:])+3)
     else:
         edadVen = generarFechaExp()[0:6] + str(int(generarFechaExp()[6:])+5)
-    return edadVen
+
+    if validarFormatoFecha(edadVen):
+        return edadVen
+    else:
+        return generarFechaVenc(edad)
 
 def generarTipoLicencia(tiposLicencias):
     """
@@ -212,23 +271,23 @@ def generarDonador():
 def generarSede(id):
     """
     funcionamiento: retorna una sede aleatoria con respecto a la cedula
-    entradas: N/A
+    entradas: id: la inicial de la cedula
     salidas: la sede escogida
     """
     if id in ['1','8','9']:
-        return ['0','10']
+        return [random.choice(['0','10'])]
     elif id == '2':
-        return ['1','4','12']
+        return [random.choice(['1','4','12'])]
     elif id == '3':
         return ['2']
     elif id == '4':
         return ['3']
     elif id == '5':
-        return ['7','8']
+        return [random.choice(['7','8'])]
     elif id == '6':
-        return ['9','11']
+        return [random.choice(['9','11'])]
     else:
-        return ['5','6']
+        return [random.choice(['5','6'])]
 
 def generarPuntaje():
     """
@@ -236,7 +295,12 @@ def generarPuntaje():
     entradas: N/A
     salidas: el puntaje
     """
-    return random.randint(0,12)
+    puntaje = random.randint(0,12)
+    if validarPuntajeFormato(puntaje):
+        return puntaje
+    else:
+        return generarPuntaje()
+
 
 def generarCorreo(nombre):
     """
@@ -245,7 +309,12 @@ def generarCorreo(nombre):
     salidas: el correo
     """
     partes = nombre.split()
-    return (partes[1]+partes[2][0]+partes[0][0]).lower() + "@gmail.com"
+    correo = (partes[1]+partes[2][0]+partes[0][0]).lower() + "@gmail.com"
+    if validarCorreo(nombre, correo):
+        return correo
+    else:
+        return generarCorreo(nombre)
+
 #----------------------------------------------------------------------------#
 #                           Traducciones                                     #
 #----------------------------------------------------------------------------#
@@ -278,8 +347,8 @@ def traducirSedeReporte(lista):
     """
     salida = ""
     for i in lista:
-        salida+= traducirSede(i) +"|"
-    return salida
+        salida+= traducirSede(i) +" | "
+    return salida[:-2]
 
 def traducirDonador(donador):
     """
@@ -324,8 +393,30 @@ def renovarLicencia(posicion, lista):
 #                           Reportes                                         #
 #----------------------------------------------------------------------------#
 
-#Procesamiento
+def expandirCelda(nombreArchivo):
+    """
+    Funcionamiento: Expandir las celdas del archivo exel.
+    Entradas: nombreArchivo: es el nombre del archivo
+    Salidas: Archivo exel
+    """
+    wb = openpyxl.load_workbook(nombreArchivo)
+    worksheet = wb.active
+    for col in worksheet.columns:
+        max_length = 0
+        column = col[0].column_letter # Get the column name
+        for cell in col:
+            if cell.coordinate in worksheet.merged_cells: # not check merge_cells
+                continue
+            try: # Necessary to avoid error on empty cells
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2)
+        worksheet.column_dimensions[column].width = adjusted_width
+    wb.save(nombreArchivo)
 
+#Procesamiento
 def sacarTipoLicencia(tipo, lista):
     """
     Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
@@ -352,8 +443,45 @@ def sacarExamenPorSancion(lista):
             nLista.append(i)
     return nLista
 
+def sacarDonatesOrganos(lista):
+    """
+    Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
+    Entradas: lista: la lista con todas la licencias
+    Salidas: nLista: la lista con las licencias que son del tipo especificado (donantes de Organos)
+    """
+    nLista = []
+    for i in lista:
+        if i.getDonador():
+            nLista.append(i)
+    return nLista
+
+def sacarLicenciasAnuladas(lista):
+    """
+    Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
+    Entradas: lista: la lista con todas la licencias
+    Salidas: nLista: la lista con las licencias que son del tipo especificado (Licencias anuladas)
+    """
+    nLista = []
+    for i in lista:
+        if i.getPuntaje() == 0:
+            nLista.append(i)
+    return nLista
+
+def sacarPorSede(lista, sede):
+    """
+    Funcionamiento: crea una lista con solo las licencias que son del tipo especificado
+    Entradas: lista: la lista con todas la licencias
+    Salidas: nLista: la lista con las licencias que son del tipo especificado (Sede)
+    """
+    nLista = []
+    for i in lista:
+        for j in i.getSede():
+            if j == sede:
+                nLista.append(i)
+    return nLista
+
 #creacion de archivos
-def reporteFichaLarga(nombreArch,lista):
+def reporteFichaLarga(nombreArch,lista, titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas larga que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -361,17 +489,19 @@ def reporteFichaLarga(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'FechaNac'
-    sheet['D1'] = 'FechaExp'
-    sheet['E1'] = 'FechaVenc'
-    sheet['F1'] = 'TipoLicen'
-    sheet['G1'] = 'TipoSangre'
-    sheet['H1'] = 'Donador'
-    sheet['I1'] = 'Sede'
-    sheet['J1'] = 'Puntaje'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'FechaNac'
+    sheet['D3'] = 'FechaExp'
+    sheet['E3'] = 'FechaVenc'
+    sheet['F3'] = 'TipoLicen'
+    sheet['G3'] = 'TipoSangre'
+    sheet['H3'] = 'Donador'
+    sheet['I3'] = 'Sede'
+    sheet['J3'] = 'Puntaje'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
@@ -385,8 +515,9 @@ def reporteFichaLarga(nombreArch,lista):
         sheet['J'+str(cont)] = i.getPuntaje()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)
     
-def reporteFichaCorta(nombreArch,lista):
+def reporteFichaCorta(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -394,18 +525,21 @@ def reporteFichaCorta(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'TipoLicen'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'TipoLicen'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
         sheet['C'+str(cont)] = i.getTipoLicencia()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
-    
-def reporteFichaDeCuatro(nombreArch,lista):
+    expandirCelda("ReportesExcel/"+nombreArch)
+
+def reporteFichaDeCuatro(nombreArch,lista,titulo):
     """
     Funcionamiento: crea el archivo excel con la ficha mas corta que incluye todos los datos de una licencia
     Entradas: nombreArch: el nombre con el que se va a guardar el archivo
@@ -413,11 +547,13 @@ def reporteFichaDeCuatro(nombreArch,lista):
     """
     workbook = Workbook()
     sheet = workbook.active
-    sheet['A1'] = 'Cédula'
-    sheet['B1'] = 'Nombre'
-    sheet['C1'] = 'TipoLicen'
-    sheet['D1'] = 'Puntaje'
-    cont = 2
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'TipoLicen'
+    sheet['D3'] = 'Puntaje'
+    cont = 4
     for i in lista:
         sheet['A'+str(cont)] = i.getCedula()
         sheet['B'+str(cont)] = i.getNombre()
@@ -425,3 +561,38 @@ def reporteFichaDeCuatro(nombreArch,lista):
         sheet['D'+str(cont)] = i.getPuntaje()
         cont+=1
     workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)
+
+def reporteFichaPuntaje(nombreArch,lista,titulo):
+    """
+    Funcionamiento: crea el archivo excel con la ficha sin puntaje
+    Entradas: nombreArch: el nombre con el que se va a guardar el archivo
+    Salidas: NA
+    """
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet['A1'] = titulo
+    sheet['A2'] = generarFechaExp()+"  "+ obtenerHoraActual()
+    sheet['A3'] = 'Cédula'
+    sheet['B3'] = 'Nombre'
+    sheet['C3'] = 'FechaNac'
+    sheet['D3'] = 'FechaExp'
+    sheet['E3'] = 'FechaVenc'
+    sheet['F3'] = 'TipoLicen'
+    sheet['G3'] = 'TipoSangre'
+    sheet['H3'] = 'Donador'
+    sheet['I3'] = 'Sede'
+    cont = 4
+    for i in lista:
+        sheet['A'+str(cont)] = i.getCedula()
+        sheet['B'+str(cont)] = i.getNombre()
+        sheet['C'+str(cont)] = i.getFechaNac()
+        sheet['D'+str(cont)] = i.getFechaEx()
+        sheet['E'+str(cont)] = i.getFechaVenci()
+        sheet['F'+str(cont)] = i.getTipoLicencia()
+        sheet['G'+str(cont)] = i.getTipoSangre()
+        sheet['H'+str(cont)] = traducirDonador(i.getDonador())
+        sheet['I'+str(cont)] = traducirSedeReporte(i.getSede())
+        cont+=1
+    workbook.save("ReportesExcel/"+nombreArch)
+    expandirCelda("ReportesExcel/"+nombreArch)

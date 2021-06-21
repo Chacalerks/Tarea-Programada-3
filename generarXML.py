@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from tkinter import messagebox
 from general import *
 from funciones import *
+from tkinter import messagebox
 
 #obtiene el html de la web page
 url = "https://practicatest.cr/blog/licencias/tipos-licencia-conducir-costa-rica"
@@ -44,6 +45,7 @@ def obtenerTiposLicencias():
     Salidas: Lista de tipos de licencias
     """
     for i in soup.findAll('h2'): 
+        print(i)
         if i.text != "":
             tipos.append(i.text)
 
@@ -57,6 +59,7 @@ def obtenerSubTipo():
     filaComentario = []
     caracter = "A"
     for i in soup.findAll('h3'):
+        print(i)
         if "Licencia" in i.text and i.text != "":
             if i.text[9:][:2][0] != caracter:
                 subtipos.append(filaTipos)
@@ -86,6 +89,7 @@ def obtenerRequisitos():
     cont = 0
     filaRequisitos = [] 
     for i in soup.findAll('ul'):
+        print(i)
         if cont ==3 or cont == 7 or cont == 9 or cont == 10 or cont==12:
             requisistos.append(filaRequisitos)
             filaRequisitos = [] 
@@ -98,8 +102,6 @@ def obtenerRequisitos():
                 cont +=1    
         temp+=1
     requisistos.append(filaRequisitos)
-
-
 
 def crearXML():
     """
@@ -114,7 +116,7 @@ def crearXML():
         tipoLicenciaET = ET.SubElement(root, "TipoLicencia")
         NombreTipo = ET.SubElement(tipoLicenciaET, "Nombre")
         NombreTipo.text = i
-        
+        print(i)
         for j in subtipos[cont]:
             #nombre del Subtipo
             print(j)
@@ -160,11 +162,14 @@ def leerXML():
     Entradas: NA
     Salidas: Lista de licencia
     """
-    lista = []
-    with open('licencia.xml', 'r') as f:
-        data = f.read()
-    Bs_data = BeautifulSoup(data, "xml")
-    NombreSubTipo = Bs_data.find_all('NombreSubTipo')
-    for i in NombreSubTipo:
-        lista.append(i.text[9:][:2])
-    return lista
+    try:
+        lista = []
+        with open('licencia.xml', 'r') as f:
+            data = f.read()
+        Bs_data = BeautifulSoup(data, "xml")
+        NombreSubTipo = Bs_data.find_all('NombreSubTipo')
+        for i in NombreSubTipo:
+            lista.append(i.text[9:][:2])
+        return lista
+    except:
+        messagebox.showwarning(title=tittle, message="No hay ningún archivo .XML para leer.")

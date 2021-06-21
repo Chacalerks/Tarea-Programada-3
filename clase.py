@@ -4,9 +4,9 @@
 #Versión: 3.9.5
 """
 DOCUMENTACIÓN
-+ Nos parace obsesivo documentar cada función por eso un comentario genral que los sepra ya que cada función se explica por sí misma
++ Nos parace obsesivo documentar cada función por eso un comentario general que los separa ya que cada función se explica por sí misma
 """
-from openpyxl import Workbook
+
 class Licencia():
 ####### Inicialización de la Clase
     def __init__(self,cedula, nombre, fechaNac, fechaEx, fechaVenci, tipoLicencia, tipoSangre, donador, sede, puntaje, correo):
@@ -68,7 +68,6 @@ class Licencia():
             return self.puntaje
     def getCorreo(self):
             return self.correo
-
 ###### Get general de los datos completos.
     def mostrarDatos(self):
         return self.cedula, self.nombre, self.fechaNac, self.fechaEx, self.fechaVenci, self.tipoLicencia, self.tipoSangre, self.donador, self.sede,  self.puntaje, self.correo

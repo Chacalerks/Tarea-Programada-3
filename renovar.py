@@ -10,9 +10,15 @@ from typing import Text
 from general import *
 from validaciones import *
 from funciones import *
-from archivo import*        
+from archivo import*     
+from clase import *   
 
-def RevonvarLicenciaES(mainFrame,corazon_img,lista):
+def renovarLicenciaES(mainFrame,corazon_img,lista):
+    """
+    Funcionamiento: SE encarga de mostrar el menú de REnovar licencia
+    Entradas: mainFrame,corazon_img,lista
+    Salidas: NA
+    """
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
@@ -24,7 +30,7 @@ def RevonvarLicenciaES(mainFrame,corazon_img,lista):
     cedula_txt = ttk.Entry(grupo,textvariable=cedula, width=80)
     cedula_txt.grid(row=1, column=1, pady=10,padx=10, columnspan=2)
 
-    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:renovarCedula(lista,cedula))
+    buscar_btn = ttk.Button(grupo, text="Buscar",width=25,padding=10, command=lambda:renovarLicenciaValidaciones(lista,cedula))
     buscar_btn.grid(row=4, column=1,padx=5, pady=80)
     
     limpiar_btn = ttk.Button(grupo, text="Limpiar",width=25,padding=10, command=lambda:limpiarCampos([cedula]))
@@ -34,7 +40,14 @@ def RevonvarLicenciaES(mainFrame,corazon_img,lista):
     regresar_btn.grid(row=0,rowspan=2, column=3, columnspan=2, pady=10,padx=300,  sticky=E)
     
     
-def renovarCedula(lista,cedula):
+def renovarLicenciaValidaciones(lista,cedula):
+    """
+    Funcionamiento: se encarga de renovar la cedula
+    Entradas: lista: la lista de objetos con todas las licencias Cedula: cédula a renovar
+    Salidas: NA
+    """
+
+    print(cedula.get())
     cedula=cedula.get()
     if not validarExistente(cedula,lista):
         messagebox.showwarning(title=tittle, message="No se ha encontrado la licencia ligada a esta cédula")
@@ -46,7 +59,7 @@ def renovarCedula(lista,cedula):
         if messagebox.askquestion(title=tittle, message="¿Desea renovar su licencia?") =="yes":
             renovarLicencia(obtenerPosicion(cedula,lista),lista)
             guardarDatos('datos',lista)
-            messagebox.showwarning(title=tittle, message="Se ha renovado su licencia!!")
+            messagebox.showinfo(title=tittle, message="Se ha renovado su licencia!!")
         else:
             messagebox.showinfo(title=tittle, message="No se ha renovado su licencia")
     

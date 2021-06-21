@@ -11,9 +11,9 @@ from validaciones import *
 from funciones import *
 from archivo import *
 
-def generarDonadorES(mainFrame,corazon_img,tipos,lista):
+def generarLicenciasES(mainFrame,corazon_img,tipos,lista):
     """
-    Funcionamiento: Se encarga de crear todos lo elementos del formulario insertar.
+    Funcionamiento: Se encarga de crear todos lo elementos del formulario generar.
     Entradas: -mainFrame: mainFrameEl contenedor(frame)
     Salidas: NA
     """
@@ -22,10 +22,11 @@ def generarDonadorES(mainFrame,corazon_img,tipos,lista):
     grupo.pack(fill=tk.BOTH,expand=1)
     cantidad = IntVar()
     cantidad.set(1)
+    tk.Label(grupo, text="      Generar Licencias ",font="BahnschriftLight 15", bg=color["fondo"],fg="black", pady=20, padx=20).grid(row=0, column=0, columnspan=2)
     #Cantidad
-    tk.Label(grupo, text="Cantidad: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=0, column=0, pady=10,padx=10,sticky=E)
+    tk.Label(grupo, text="Cantidad: ",font="BahnschriftLight 12", bg=color["fondo"],fg="black").grid(row=2, column=0, pady=10,padx=10,sticky=E)
     cantidad_spb = ttk.Spinbox(grupo,textvariable=cantidad,from_=1,to=250,width=50,state="readonly")
-    cantidad_spb.grid(row=0, column=1, pady=10,padx=10)
+    cantidad_spb.grid(row=2, column=1, pady=10,padx=10)
 
     #Generar Bonotes
     generar_btn = ttk.Button(grupo, text="Generar Licencias",width=40,padding=20, command=lambda:generarLicenciasValidaciones(cantidad,tipos,lista))
@@ -35,6 +36,11 @@ def generarDonadorES(mainFrame,corazon_img,tipos,lista):
     regresar_btn.grid(row=0,rowspan=2, column=2, columnspan=2, pady=10,padx=450,  sticky=E)
 
 def generarLicenciasValidaciones(cantidad,tipos,lista):
+    """
+    Funcionamiento: Se encarga de crear la licencias
+    Entradas: -mainFrame: mainFrameEl contenedor(frame), -lista: la base de datos
+    Salidas: NA
+    """
     cantidad = cantidad.get()
     generarLicencias(cantidad,tipos,lista)
     guardarDatos('datos',lista)

@@ -15,8 +15,18 @@ from validaciones import *
 from funciones import *
 from archivo import*
 
-def menuReportes(mainFrame,corazon_img,lista):
+"""
+DOCUMENTACIÓN
++ En caso de que no existan licencias que cumplan los criterios de búsqueda de algún reporte, de igual forma se generará el reporte
+vació ya que es importante notar que no hay licencias con esos parámetros de búsqueda
+"""
 
+def menuReportes(mainFrame,corazon_img,lista):
+    """
+    Funcionamiento: Carga el menú de los reportes.
+    Entradas: -mainFrame: mainFrameEl contenedor(frame) - lista: La base de datos para buscar el reporte
+    Salidas: NA
+    """
     limpiarFrame(mainFrame)
     grupo = tk.Frame(mainFrame, bg=color["fondo"],padx= 30, pady=60)
     grupo.pack(fill=tk.BOTH,expand=1)
@@ -40,12 +50,12 @@ def menuReportes(mainFrame,corazon_img,lista):
 
     #Los donantes de órganos
     completos_btn = tk.Button(grupo, text="Los donantes de órganos",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteTotalES(lista))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteDonanteOrganosES(lista))
     completos_btn.grid(row=2, column=1,padx=15, pady=35)
 
     #Licencia anulada
     mujeres_btn = tk.Button(grupo, text="Licencia anulada",font="BahnschriftLight 12",bg=color["principal"],fg="white", activebackground="white",
-    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteMujeresONegativoES(lista))
+    width=15,activeforeground="black", bd=0, padx=100, pady=20,command=lambda:reporteLicenciaAnuladaES(lista))
     mujeres_btn.grid(row=3, column=0,padx=15, pady=35)
 
     #Licencias por sede
@@ -102,7 +112,7 @@ def porSede(mainFrame,corazon_img,lista):
                'Río Claro de Golfito','San Carlos']
     sede_cbo.grid(row=3, column=1, pady=10,padx=10)
     
-    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reporteTipoSangreES(tipoSangre,lista))
+    generar_btn = ttk.Button(grupo, text="Crear Reporte",width=40,padding=20, command=lambda:reportePorSedeES(sede,lista))
     generar_btn.grid(row=4, column=0, columnspan=2, padx=5, pady=35)
 
     regresar_btn = tk.Button(grupo, text="< Regresar", font="Bahnschrift 15", fg="gray17",bd=0,command=lambda:menuReportes(mainFrame,corazon_img,lista))
@@ -118,9 +128,9 @@ def reporteTotalidadES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaLarga("reporte_total_"+generarFechaExp()+".xlsx",lista)
+        reporteFichaLarga("reporte_total_"+generarFechaExp()+".xlsx",lista, "Totalidad de licencias")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_total_"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_total_"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
 
@@ -136,9 +146,9 @@ def reporteTipoLicenciaES(tipoLicencia,lista):
         if not validarVacio(tipoLicencia):
             messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
         else:
-            reporteFichaCorta("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx",sacarTipoLicencia(tipoLicencia,lista))
+            reporteFichaCorta("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx",sacarTipoLicencia(tipoLicencia,lista),"Por tipo de licencia ")
             messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-            abrirFile("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx")
+            abrirFile("reporte_licencia_tipo"+tipoLicencia+"_"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
         
@@ -149,9 +159,54 @@ def reporteExamenPorSancionES(lista):
     Salidas: NA
     """
     try:
-        reporteFichaDeCuatro("reporte_examen_sancion_"+generarFechaExp()+".xlsx",sacarExamenPorSancion(lista))
+        reporteFichaDeCuatro("reporte_examen_sancion_"+generarFechaExp()+".xlsx",sacarExamenPorSancion(lista), "Examen por sanción ")
         messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
-        abrirFile("reporte_examen_sancion_"+generarFechaExp()+".xlsx")
+        abrirFile("reporte_examen_sancion_"+generarFechaExp()+".xlsx", "ReportesExcel")
         
+    except:
+        messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
+
+def reporteDonanteOrganosES(lista):
+    """
+    Funcionamiento: se encarga de crear el reporte de las personas donantes de organos y abrir el mismo
+    Entradas: lista: la lista de objetos con todas las licencias
+    Salidas: NA
+    """
+    try:
+        reporteFichaCorta("reporte_donante_organo_"+generarFechaExp()+".xlsx",sacarDonatesOrganos(lista),"Los donantes de órganos")
+        messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
+        abrirFile("reporte_donante_organo_"+generarFechaExp()+".xlsx", "ReportesExcel")
+        
+    except:
+        messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
+
+def reporteLicenciaAnuladaES(lista):
+    """
+    Funcionamiento: se encarga de crear el reporte de las personas con licencia anulada y abrir el mismo
+    Entradas: lista: la lista de objetos con todas las licencias
+    Salidas: NA
+    """
+    try:
+        reporteFichaPuntaje("reporte_licencias_anuladas"+generarFechaExp()+".xlsx",sacarLicenciasAnuladas(lista), "Licencia anulada")
+        messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
+        abrirFile("reporte_licencias_anuladas"+generarFechaExp()+".xlsx", "ReportesExcel")
+        
+    except:
+        messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
+
+def reportePorSedeES(sede,lista):
+    """
+    Funcionamiento: se encarga de crear el reporte por sede
+    Entradas: lista: la lista de objetos con todas las licencias
+    Salidas: NA
+    """
+    sede = sede.get()
+    try:
+        if not validarVacio(sede):
+            messagebox.showwarning(title=tittle, message="Debe seleccionar una opción.")
+        else:
+            reporteFichaLarga("reporte_por_sede"+generarFechaExp()+".xlsx",sacarPorSede(lista, traducirSede(sede)), "Licencias por sede ")
+            messagebox.showinfo(title=tittle, message="Se ha creado el reporte")
+            abrirFile("reporte_por_sede"+generarFechaExp()+".xlsx", "ReportesExcel")
     except:
         messagebox.showwarning(title=tittle, message="No se puede crear el reporte, cierre el archivo abierto!")
